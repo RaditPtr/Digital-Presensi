@@ -13,21 +13,23 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->integer('nis', true, false)->nullable(false);
-            $table->integer('id_user', false);
-            $table->integer('id_kelas', false);
+            $table->integer('id_user');
+            $table->integer('id_kelas');
             $table->string('nama_siswa');
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->text('foto_siswa');
 
-            // $table->foreign('id_user')
-            //     ->references('id_user')->on('tbl_user')
-            //     ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_user')
+                ->references('id_user')->on('tbl_user')
+                ->onUpdate('cascade')->onDelete('cascade');
 
             // $table->foreign('id_kelas')
-            //     ->references('id_kelas')->on('kelas')
-            //     ->onUpdate('cascade')->onDelete('cascade');
+            // ->references('id_kelas')->on('kelas')
+            // ->onUpdate('cascade')->onDelete('cascade');
+            
         });
     }
+
 
     
 

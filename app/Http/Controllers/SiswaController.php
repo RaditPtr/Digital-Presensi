@@ -8,6 +8,8 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Exception;
+
 
 class SiswaController extends Controller
 {
@@ -20,7 +22,8 @@ class SiswaController extends Controller
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         
         $data = [
-            'siswa' => $tampilkan_siswa,
+            // 'siswa' => $tampilkan_siswa,
+            'siswa' => $siswa->all(),
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa
         ];
         // dd($data);
@@ -63,9 +66,9 @@ class SiswaController extends Controller
         }
 
         if ($siswa->create($data)) {
-            return redirect()->to('dashboard/siswa')->with("success", "Data Surat Berhasil Ditambahkan");
+            return redirect()->to('dashboard/siswa')->with("success", "Data siswa Berhasil Ditambahkan");
         } else {
-            return back()->with("error", "Data Surat Gagal Ditambahkan");
+            return back()->with("error", "Data siswa Gagal Ditambahkan");
         }
     }
 
@@ -113,7 +116,17 @@ class SiswaController extends Controller
                 $data['foto_siswa'] = $foto_nama;
             }
 
-            $dataUpdate = $siswa->where('nis', $nis)->update($data);
+            DB::beginTransaction();
+            try {
+                $dataUpdate = $siswa->where('nis', $nis)->update($data);
+                DB::commit();
+                return redirect('dashboard/siswa')->with('success', 'Data Berhasil Diupdate');
+            } catch (Exception $e) {
+                DB::rollback();
+                dd($e->getMessage());
+            }
+
+            // $dataUpdate = $siswa->where('nis', $nis)->update($data);
 
             if ($dataUpdate) {
                 return redirect('dashboard/siswa');

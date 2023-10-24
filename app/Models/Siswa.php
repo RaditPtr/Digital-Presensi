@@ -13,18 +13,33 @@ class Siswa extends Model
     protected $fillable = ['id_user', 'id_kelas', 'nama_siswa', 'jenis_kelamin', 'foto_siswa'];
     public $timestamps = false;
 
+    
+    public function user()
+    {
+        return $this->belongsTo(tbl_user::class);
+    }
+    public function getUserAttribute()
+    {
+        return tbl_user::find($this->attributes['id_user'])->tbl_user;
+    }
+
+
     public function kelas()
     {
         return $this->belongsTo(Kelas::class);
     }
-
-    public function user()
+    public function getKelasAttribute()
     {
-        return $this->belongsTo(Siswa::class);
+        return Kelas::find($this->attributes['id_kelas'])->kelas;
     }
+
 
     public function presensi_siswa()
     {
-        return $this->hasMany(presensi_siswa::class, 'nis');
+        return $this->hasMany(PresensiSiswa::class, 'nis');
     }
+
+    
+
+    
 }

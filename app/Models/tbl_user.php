@@ -13,6 +13,11 @@ class tbl_user extends Authenticatable
     protected $fillable = ['username','password','role'];
     public $timestamps = false;
 
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'nis');
+    }
+
 }
 
 

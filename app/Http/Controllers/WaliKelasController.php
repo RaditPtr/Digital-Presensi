@@ -53,9 +53,9 @@ class WaliKelasController extends Controller
         }
 
         if ($siswa->create($data)) {
-            return redirect()->to('dashboard/walikelas')->with("success", "Data Surat Berhasil Ditambahkan");
+            return redirect()->to('dashboard/walikelas')->with("success", "Data siswa Berhasil Ditambahkan");
         } else {
-            return back()->with("error", "Data Surat Gagal Ditambahkan");
+            return back()->with("error", "Data siswa Gagal Ditambahkan");
         }
     }
 

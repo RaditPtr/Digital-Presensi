@@ -38,10 +38,10 @@ class DashboardController extends Controller
 
         // Proses Insert
         if ($guru->create($data)) {
-            return redirect('dashboard')->with('success', 'Data jenis surat baru berhasil ditambah');
+            return redirect('dashboard')->with('success', 'Data jenis siswa baru berhasil ditambah');
         } 
 
-            return back()->with('error', 'Data jenis surat gagal ditambahkan');
+            return back()->with('error', 'Data jenis siswa gagal ditambahkan');
     }
 
     public function edit(string $id, Guru $guru) {

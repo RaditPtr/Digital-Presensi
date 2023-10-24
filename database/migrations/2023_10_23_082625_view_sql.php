@@ -20,7 +20,7 @@ return new class extends Migration
             s.nama_siswa AS nama_siswa,	
             k.nama_kelas AS nama_kelas,
             s.foto_siswa AS foto_siswa,
-            s.nis AS nis
+            s.nis AS nis,
             s.jenis_kelamin AS jenis_kelamin
         FROM siswa s
         INNER JOIN kelas k ON s.id_kelas = k.id_kelas

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,10 +14,17 @@ class Kelas extends Model
     protected $fillable = ['id_jurusan', 'id_angkatan', 'id_walas', 'nama_kelas', 'tingkat_kelas',];
     public $timestamps = false;
 
+    
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'id_kelas');
+    }
+
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
     }
+    
 
     public function angkatan()
     {
@@ -28,8 +36,15 @@ class Kelas extends Model
         return $this->belongsTo(WaliKelas::class);
     }
 
-    public function user()
-    {
-        return $this->hasMany(tbl_user::class, 'id_kelas');
-    }
+    // public function siswas()
+    // {
+    //     return $this->belongsTo(Siswa::class);
+    // }
+
+    
+
+//     public function siswas()
+//     {
+//         return $this->hasMany(Siswa::class, 'id_user');
+//     }
 }
