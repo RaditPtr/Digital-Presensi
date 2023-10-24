@@ -24,13 +24,15 @@ class Siswa extends Model
     }
 
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class);
-    }
+
     public function getKelasAttribute()
     {
         return Kelas::find($this->attributes['id_kelas'])->kelas;
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 
 

@@ -18,14 +18,15 @@ return new class extends Migration
         CREATE PROCEDURE CreateAkunSiswa(
             IN new_nis INT,
             IN new_id_user INT,
+            IN new_id_kelas INT,
             IN new_nama_siswa VARCHAR(255), 
             IN new_jenis_kelamin ENUM('laki-laki', 'perempuan'), 
-            IN new_foto_siswa VARCHAR(255),
+            IN new_foto_siswa VARCHAR(255)
         )
         BEGIN
             -- Insert data user
             INSERT INTO tbl_user (nis, id_user, nama_siswa, jenis_kelamin, foto_siswa)
-            VALUES (new_nis, new_id_user, new_nama_siswa, new_jenis_kelamin, new_foto_siswa);
+            VALUE (new_nis, new_id_user, new_id_kelas, new_nama_siswa, new_jenis_kelamin, new_foto_siswa);
         END 
         ");
     }

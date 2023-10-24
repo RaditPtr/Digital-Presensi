@@ -22,8 +22,8 @@ class SiswaController extends Controller
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         
         $data = [
-            // 'siswa' => $tampilkan_siswa,
-            'siswa' => $siswa->all(),
+            'siswa' => $tampilkan_siswa,
+            // 'siswa' => $siswa->all(),
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa
         ];
         // dd($data);
