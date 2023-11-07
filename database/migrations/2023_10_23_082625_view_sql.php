@@ -13,6 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared("DROP VIEW IF EXISTS view_siswa;");
+        DB::unprepared("DROP VIEW IF EXISTS view_kelas;");
 
         DB::unprepared("
         CREATE VIEW view_siswa AS
@@ -26,6 +27,16 @@ return new class extends Migration
         INNER JOIN kelas k ON s.id_kelas = k.id_kelas
         ");
 
+        DB::unprepared("
+        CREATE VIEW view_Kelas AS
+        SELECT 
+        k.nama_kelas AS nama_kelas, 
+        g.nama_guru AS nama_guru
+        FROM kelas k
+        INNER JOIN wali_kelas w ON k.id_walas = w.id_walas
+        INNER JOIN guru g ON w.id_guru = g.id_guru;
+        ");
+
     
     }
 
@@ -34,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // DB::unprepared("DROP VIEW IF EXISTS view_siswa;");
+        DB::unprepared("DROP VIEW IF EXISTS view_siswa;");
     }
 };

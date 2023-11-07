@@ -16,7 +16,7 @@
                         <a href="siswa/tambah">
                             <btn class="btn btn-success">Tambah Siswa</btn>
                         </a>
-                        <p>jumlah siswa : {{ $jumlah_siswa }}</p>
+                        <h3>jumlah siswa : {{ $jumlah_siswa }}</h3>
 
                     </div>
                     <p>

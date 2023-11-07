@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerDashboard;
 use App\Http\Controllers\WaliKelasController;
+use App\Http\Controllers\PresensiSiswaController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\SiswaController;
 
@@ -47,19 +49,14 @@ Route::get('/home', function () {
     Route::get('/dashboard/siswa/edit/{id}', [SiswaController::class, 'edit']);
     Route::post('/dashboard/siswa/edit/simpan', [SiswaController::class, 'update']);
 
+    Route::get('/dashboard/kelas', [KelasController::class, 'indexKelas']);
+    Route::get('/dashboard/presensi', [PresensiSiswaController::class, 'indexPresensiSiswa']);
+
 
     Route::get('/logout', [AuthController::class, 'logout']);
 
-        Route::prefix('/logs')->group(function () {
-            Route::get('/', [LogsController::class, 'index']);
-        });
-
-
-        Route::get('/dashboard/walikelas', [WaliKelasController::class, 'index']);
-    Route::get('/dashboard/walikelas/tambah', [WaliKelasController::class, 'create']);
-    Route::post('/dashboard/walikelas/simpan', [WaliKelasController::class, 'store']);
-    Route::delete('/dashboard/walikelas/hapus', [WaliKelasController::class, 'destroy']);
-    Route::get('/dashboard/walikelas/edit/{id}', [WaliKelasController::class, 'edit']);
-    Route::post('/dashboard/walikelas/edit/simpan', [WaliKelasController::class, 'update']);
+    Route::prefix('/logs')->group(function () {
+        Route::get('/', [LogsController::class, 'index']);
+    });
 });
 

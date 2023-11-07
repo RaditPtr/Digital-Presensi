@@ -8,7 +8,6 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
-use Exception;
 
 
 class SiswaController extends Controller
@@ -16,23 +15,24 @@ class SiswaController extends Controller
     //
     public function index(Siswa $siswa)
     {
-        $tampilkan_siswa = DB::table('view_siswa');
-
-
+        $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         
+        // array untuk menangkap data siswa dari view dan 
+        // menangkap data jumlah siswa dari stored function
         $data = [
             'siswa' => $tampilkan_siswa,
             // 'siswa' => $siswa->all(),
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa
         ];
-        // dd($data);
+
         return view('siswa.index', $data);
-        // return $data;
     }
 
     public function create(Kelas $kelas)
     {
+
+        
         $kelas = $kelas
             ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
             ->get();
@@ -65,7 +65,8 @@ class SiswaController extends Controller
             $data['foto_siswa'] = $foto_nama;
         }
 
-        if ($siswa->create($data)) {
+        if (DB::statement('CALL CreateAkunSiswa(?,?,?,?,?,?)', [$data['nis'], $data['id_user'], 
+            $data['id_kelas'], $data['nama_siswa'], $data['jenis_kelamin'], $data['foto_siswa']])) {
             return redirect()->to('dashboard/siswa')->with("success", "Data siswa Berhasil Ditambahkan");
         } else {
             return back()->with("error", "Data siswa Gagal Ditambahkan");
@@ -93,15 +94,15 @@ class SiswaController extends Controller
     public function update(Request $request, Siswa $siswa)
     {
         $nis = $request->input('nis');
-
+        
         $data = $request->validate(
             [
                 'nama_siswa' => 'sometimes',
                 'jenis_kelamin' => 'sometimes',
+                'id_kelas' => 'sometimes',
                 'foto_siswa' => 'sometimes|file'
-            ]
-        );
-
+                ]
+            );
         if ($nis !== null) {
 
             if ($request->hasFile('foto_siswa') && $request->file('foto_siswa')->isValid()) {
@@ -116,24 +117,14 @@ class SiswaController extends Controller
                 $data['foto_siswa'] = $foto_nama;
             }
 
-            DB::beginTransaction();
-            try {
                 $dataUpdate = $siswa->where('nis', $nis)->update($data);
-                DB::commit();
-                return redirect('dashboard/siswa')->with('success', 'Data Berhasil Diupdate');
-            } catch (Exception $e) {
-                DB::rollback();
-                dd($e->getMessage());
+                if($dataUpdate)
+                {
+                    return redirect('dashboard/siswa')->with('success', 'Data Berhasil Diupdate');
+                }else{
+                    return back()->with('error', 'Data Gagal Diupdate');
+                }
             }
-
-            // $dataUpdate = $siswa->where('nis', $nis)->update($data);
-
-            if ($dataUpdate) {
-                return redirect('dashboard/siswa');
-            }
-        }
-
-        return back()->with('error', 'Data gagal diupdate');
     }
 
     /**

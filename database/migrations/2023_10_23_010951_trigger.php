@@ -43,25 +43,6 @@ return new class extends Migration
             VALUES ("siswa", CURDATE(), CURTIME(), "Hapus", "Sukses");
         END
         ');
-
-
-
-        // DB::unprepared('DROP TRIGGER IF EXISTS ' . $this->trgName);
-        // DB::unprepared(
-        // 'CREATE TRIGGER ' . $this->trgName . ' AFTER INSERT ON siswa
-        // FOR EACH ROW
-        // BEGIN
-        // DECLARE siswa_id INT;
-        // DECLARE userid VARCHAR(200);
-        // DECLARE siswanama VARCHAR(200);
-
-        // SELECT username INTO userid FROM tbl_user WHERE id_user = NEW.id_user;
-        // SELECT nama_siswa INTO siswanama FROM siswa WHERE nis = NEW.nis;
-
-        // SELECT nis INTO siswa_id FROM siswa WHERE nis = NEW.nis;
-        // INSERT INTO logs (logs) VALUES (CONCAT(userid, ": Melakukan Penambahan Siswa Dengan Nomor ", siswa_id, ", yaitu ", siswanama));
-        // END'
-        // );
     }
 
     /**

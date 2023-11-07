@@ -33,7 +33,9 @@ class AuthController extends Controller
             Session::regenerateToken();
             if ($user->role == 'tatausaha') {
                 return redirect('dashboard');
-            } 
+            } else {
+                return redirect('dashboard/siswa');
+            }   
         }
 
         return redirect()->back()->withErrors('Terdapat Kesalahan Pada Username atau Password')->withInput();

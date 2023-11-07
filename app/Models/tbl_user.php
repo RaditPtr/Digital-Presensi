@@ -15,8 +15,9 @@ class tbl_user extends Authenticatable
 
     public function siswa()
     {
-        return $this->hasMany(Siswa::class, 'nis');
+        return $this->hasMany(Siswa::class, 'id_user');
     }
+
 
 }
 

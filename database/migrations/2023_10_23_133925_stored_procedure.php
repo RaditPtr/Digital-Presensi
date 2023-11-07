@@ -12,8 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::unprepared('DROP Procedure IF EXISTS CreateAkunSiswa');
-
+        DB::unprepared('DROP PROCEDURE IF EXISTS CreateAkunSiswa');
         DB::unprepared("
         CREATE PROCEDURE CreateAkunSiswa(
             IN new_nis INT,
@@ -24,11 +23,26 @@ return new class extends Migration
             IN new_foto_siswa VARCHAR(255)
         )
         BEGIN
-            -- Insert data user
-            INSERT INTO tbl_user (nis, id_user, nama_siswa, jenis_kelamin, foto_siswa)
-            VALUE (new_nis, new_id_user, new_id_kelas, new_nama_siswa, new_jenis_kelamin, new_foto_siswa);
-        END 
+            DECLARE pesan_error CHAR(5) DEFAULT '000';
+        
+            DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+            BEGIN
+                SET pesan_error = '001';
+            END;
+        
+            START TRANSACTION;
+
+            INSERT INTO siswa (nis, id_user, id_kelas, nama_siswa, jenis_kelamin, foto_siswa)
+            VALUES (new_nis, new_id_user, new_id_kelas, new_nama_siswa, new_jenis_kelamin, new_foto_siswa);
+
+            IF pesan_error = '000' THEN
+                COMMIT; -- Commit the transaction if no error occurs
+            ELSE
+                ROLLBACK; -- Rollback the transaction if an error occurs
+            END IF;
+        END;
         ");
+
     }
 
     /**
