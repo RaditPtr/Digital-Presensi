@@ -19,11 +19,12 @@ class GuruSeeder extends Seeder
         // Faker dengan region Indonesia
         $faker = Faker::create('id_ID');
 
-        $datas = [2, 4, 5];
+        $datas = [1, 2];
 
         foreach ($datas as $data) {
             for ($i = 1; $i <= 3; $i++) {
                 DB::table('guru')->insert([
+                    'id_user' => $data,
                     'nama_guru' => $faker->name(). Arr::random(['S.Pd', 'S.Kom']),
                     'foto_guru' => $faker->image(),
                 ]);

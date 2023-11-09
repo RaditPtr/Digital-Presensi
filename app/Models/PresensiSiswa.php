@@ -17,4 +17,9 @@ class PresensiSiswa extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+
+    public function getUserAttribute()
+    {
+        return siswa::find($this->attributes['nis'])->tbl_user;
+    }
 }

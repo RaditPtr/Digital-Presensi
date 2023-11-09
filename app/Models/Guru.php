@@ -10,7 +10,7 @@ class Guru extends Model
     use HasFactory;
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
-    protected $fillable = ['nama_guru', 'foto_guru'];
+    protected $fillable = ['id_user', 'nama_guru', 'foto_guru'];
     public $timestamps = false;
 
     public function guru_piket()
@@ -28,6 +28,15 @@ class Guru extends Model
         return $this->hasMany(WaliKelas::class, 'id_guru');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(tbl_user::class, 'id_user');
+    }
+
+    public function getUserAttribute()
+    {
+        return tbl_user::find($this->attributes['id_user'])->username;
+    }
 
     // public function user()
     // {

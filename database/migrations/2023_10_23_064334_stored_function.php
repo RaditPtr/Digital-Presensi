@@ -13,12 +13,22 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared('DROP FUNCTION IF EXISTS CountSiswa');
+        DB::unprepared('DROP FUNCTION IF EXISTS CountKelas');
 
         DB::unprepared('
         CREATE FUNCTION CountSiswa() RETURNS INT
         BEGIN
             DECLARE total INT;
             SELECT COUNT(*) INTO total FROM siswa;
+            RETURN total;
+        END
+        ');
+
+        DB::unprepared('
+        CREATE FUNCTION CountKelas() RETURNS INT
+        BEGIN
+            DECLARE total INT;
+            SELECT COUNT(*) INTO total FROM kelas;
             RETURN total;
         END
         ');
@@ -31,5 +41,6 @@ return new class extends Migration
     public function down(): void
     {
         DB::unprepared('DROP Procedure IF EXISTS CreateSiswa');
+        DB::unprepared('DROP Procedure IF EXISTS CreateKelas');
     }
 };

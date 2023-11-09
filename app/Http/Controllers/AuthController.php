@@ -34,7 +34,7 @@ class AuthController extends Controller
             if ($user->role == 'tatausaha') {
                 return redirect('dashboard');
             } else {
-                return redirect('dashboard/siswa');
+                return redirect('dashboard');
             }   
         }
 
