@@ -24,7 +24,13 @@ class TblUserSeeder extends Seeder
                 'username' => 'walikelas',
                 'role' => 'walikelas',
                 'password' => Hash::make('123')
-            ], [
+            ], 
+            [
+                'username' => 'gurubk',
+                'role' => 'gurubk',
+                'password' => Hash::make('123')
+            ], 
+            [
                 'username' => 'siswa1',
                 'role' => 'siswa',
                 'password' => Hash::make('123')

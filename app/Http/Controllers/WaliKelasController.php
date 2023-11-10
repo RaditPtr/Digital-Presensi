@@ -28,16 +28,17 @@ class WaliKelasController extends Controller
         return view('siswa.index', $data);
     }
 
-    public function createSiswa(Kelas $kelas)
+    public function createSiswa(Siswa $siswa ,Kelas $kelas)
     {
 
 
         $kelas = $kelas
             ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
             ->get();
+        $siswa = $siswa->all();
 
         // dd($kelas);
-        return view("siswa.tambah", ["kelas" => $kelas]);
+        return view("siswa.tambah", ["kelas" => $kelas, "siswa" => $siswa]);
     }
 
     /**

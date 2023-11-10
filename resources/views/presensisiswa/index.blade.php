@@ -18,9 +18,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <br>
+                        @if (Auth::check() && Auth::user()->role == 'gurupiket')
                         <a href="presensi/tambah">
                             <btn class="btn btn-success">Tambah Presensi</btn>
                         </a>
+                        @endif
                     </div>
                     <p>
                         <hr>
@@ -45,10 +47,12 @@
                                     <a href="presensi/detail/{{$p->id_presensi}}">
                                         <btn class="btn btn-primary">Detail</btn>
                                     </a>
+                                    @if (Auth::check() && Auth::user()->role == 'gurupiket')
                                     <a href="presensi/edit/{{$p->id_presensi}}">
                                         <btn class="btn btn-warning">Edit</btn>
                                     </a>
                                     <btn class="btn btn-danger btnHapus" idHapus="{{ $p->id_presensi }}">Hapus</btn>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
