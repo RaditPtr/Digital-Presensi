@@ -16,12 +16,14 @@ class DashboardController extends Controller
     {
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         $totalkelas = DB::select('SELECT CountKelas() AS TotalKelas');
+        $totalpresensi = DB::select('SELECT CountPresensi() AS TotalPresensi');
 
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
-            'jumlah_kelas' => $totalkelas[0]->TotalKelas
+            'jumlah_kelas' => $totalkelas[0]->TotalKelas,
+            'jumlah_presensi' => $totalpresensi[0]->TotalPresensi
         ];
 
         return view('dashboard.index', $data);

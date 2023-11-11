@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\tbl_user;
 use App\Models\PresensiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,18 +13,38 @@ use Illuminate\Support\Facades\DB;
 
 class WaliKelasController extends Controller
 {
-    public function indexSiswa()
+
+    public function profilWalas(Tbl_user $tbl_user) {
+        // $auth = Auth::user();
+
+        // $data = [
+        //     'akun' => $tbl_user
+        //     ->join('guru', 'akun.id_guru', '=', 'guru.id_user')
+        //     ->where('id_guru', $auth->id_user)->first()
+        // ];
+    
+        // dd($data);
+        return view('layout.layout');
+    }
+
+    public function indexSiswa(tbl_user $tbl_user)
     {
         $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
-
+        $auth = Auth::user();
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
+            
             'siswa' => $tampilkan_siswa,
             // 'siswa' => $siswa->all(),
-            'jumlah_siswa' => $totalsiswa[0]->TotalSiswa
+            'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
+            'akun' => $tbl_user
+            ->join('tbl_user', 'guru.id_user', '=', 'tbl_user.id_user')
+            ->where('id_guru', $auth->id_user)->first()
         ];
+
+        dd($data);
 
         return view('siswa.index', $data);
     }

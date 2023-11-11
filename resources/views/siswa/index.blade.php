@@ -19,7 +19,6 @@
 
                     </div>
                     <p>
-                        <hr>
                     <table class="table table-hover table-bordered DataTable">
                         <thead>
                             <tr>

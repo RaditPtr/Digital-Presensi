@@ -32,6 +32,15 @@ return new class extends Migration
             RETURN total;
         END
         ');
+
+        DB::unprepared('
+        CREATE FUNCTION CountPresensi() RETURNS INT
+        BEGIN
+            DECLARE total INT;
+            SELECT COUNT(*) INTO total FROM presensi_siswa;
+            RETURN total;
+        END
+        ');
     }
     
 
@@ -42,5 +51,6 @@ return new class extends Migration
     {
         DB::unprepared('DROP Procedure IF EXISTS CreateSiswa');
         DB::unprepared('DROP Procedure IF EXISTS CreateKelas');
+        DB::unprepared('DROP Procedure IF EXISTS CreatePresensi');
     }
 };

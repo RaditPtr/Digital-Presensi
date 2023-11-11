@@ -57,14 +57,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url('dashboard/surat') }}">Dashboard</a>
                     </li>
-                    @if (Auth::check() && Auth::user()->role == 'admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/user') }}">Manage User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('jenis/surat') }}">Jenis Surat</a>
-                        </li>
-                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('transaksi/surat') }}">List</a>
                     </li>

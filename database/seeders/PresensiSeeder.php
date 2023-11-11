@@ -18,7 +18,7 @@ class PresensiSeeder extends Seeder
 
         DB::table('presensi_siswa')->insert(
             [
-                'nis' => '280407381',
+                'nis' => '235509347',
                 'tanggal_presensi' => $faker->date(),
                 'status_hadir' => 'Hadir',
                 'waktu_presensi' => $faker->time(),
