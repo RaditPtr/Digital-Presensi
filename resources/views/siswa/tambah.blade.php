@@ -26,7 +26,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Siswa</label>
                                     <select name="id_kelas" class="form-control">
                                         @foreach ($siswa as $i)
@@ -35,7 +35,7 @@
                                         </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> -->
                                 <label>Nama Siswa</label>
                                 <input type="text" class="form-control" name="nama_siswa" />
 

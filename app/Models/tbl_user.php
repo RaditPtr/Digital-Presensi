@@ -18,7 +18,10 @@ class tbl_user extends Authenticatable
         return $this->hasMany(Siswa::class, 'id_user');
     }
 
-
+    public function guru()
+    {
+        return $this->hasMany(Guru::class, 'id_user');
+    }
 }
 
 

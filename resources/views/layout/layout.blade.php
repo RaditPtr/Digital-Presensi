@@ -48,8 +48,7 @@
     <nav class="navbar navbar-expand-md fw-semibold fixed-top text-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">GeoPresensi</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -61,6 +60,28 @@
                         <a class="nav-link" href="{{ url('transaksi/surat') }}">List</a>
                     </li>
                 </ul>
+
+
+                <!-- Right links -->
+                <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
+
+                    <li class="nav-item dropdown p-10">
+                        <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown link
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
+
                 <div class="d-flex">
                     <a href="{{ url('/logout') }}"><button class="btn btn-secondary">Logout</button></a>
                 </div>

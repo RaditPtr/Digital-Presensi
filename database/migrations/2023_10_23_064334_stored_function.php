@@ -14,6 +14,7 @@ return new class extends Migration
     {
         DB::unprepared('DROP FUNCTION IF EXISTS CountSiswa');
         DB::unprepared('DROP FUNCTION IF EXISTS CountKelas');
+        DB::unprepared('DROP FUNCTION IF EXISTS CountPresensi');
 
         DB::unprepared('
         CREATE FUNCTION CountSiswa() RETURNS INT
