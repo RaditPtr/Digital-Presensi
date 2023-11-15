@@ -23,11 +23,6 @@ class tbl_user extends Authenticatable
         return $this->hasMany(Guru::class, 'id_user');
     }
 
-    public function pengurus_kelas()
-    {
-        return $this->hasMany(PengurusKelas::class, 'id_user');
-    }
-
     public function tata_usaha()
     {
         return $this->hasMany(TataUsaha::class, 'id_user');

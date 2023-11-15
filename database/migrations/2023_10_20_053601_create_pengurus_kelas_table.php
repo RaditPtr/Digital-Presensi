@@ -13,13 +13,8 @@ return new class extends Migration
     {
         Schema::create('pengurus_kelas', function (Blueprint $table) {
             $table->integer('id_pengurus', true, false)->nullable(false);
-            $table->integer('id_user', false);
             $table->integer('nis', false);
             $table->string('jabatan', 60);
-
-            $table->foreign('id_user')
-                ->references('id_user')->on('tbl_user')
-                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('nis')
                 ->references('nis')->on('siswa')

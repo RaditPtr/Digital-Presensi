@@ -12,16 +12,6 @@ class PengurusKelas extends Model
     protected $primaryKey = 'id_pengurus';
     protected $fillable = ['id_user', 'nis', 'jabatan'];
     public $timestamps = false;
-    
-    
-    public function user()
-    {
-        return $this->belongsTo(tbl_user::class);
-    }
-    public function getUserAttribute()
-    {
-        return tbl_user::find($this->attributes['id_user'])->tbl_user;
-    }
 
     public function siswa()
     {
