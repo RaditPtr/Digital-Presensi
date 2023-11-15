@@ -18,6 +18,10 @@ class GuruBk extends Model
     {
         return $this->belongsTo(Guru::class);
     }
+    public function getGuruAttribute()
+    {
+        return guru::find($this->attributes['id_guru'])->guru;
+    }
 
     // public function getGuruAttribute()
     // {

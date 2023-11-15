@@ -19,6 +19,7 @@ return new class extends Migration
         DB::unprepared("
         CREATE VIEW view_siswa AS
         SELECT
+            s.id_kelas AS id_kelas,
             s.nama_siswa AS nama_siswa,	
             k.nama_kelas AS nama_kelas,
             s.foto_siswa AS foto_siswa,

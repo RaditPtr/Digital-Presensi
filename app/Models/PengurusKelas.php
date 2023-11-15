@@ -12,19 +12,27 @@ class PengurusKelas extends Model
     protected $primaryKey = 'id_pengurus';
     protected $fillable = ['id_user', 'nis', 'jabatan'];
     public $timestamps = false;
+    
+    
+    public function user()
+    {
+        return $this->belongsTo(tbl_user::class);
+    }
+    public function getUserAttribute()
+    {
+        return tbl_user::find($this->attributes['id_user'])->tbl_user;
+    }
 
     public function siswa()
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    public function user()
+    public function getSiswaAttribute()
     {
-        return $this->belongsTo(tbl_user::class);
+        return Siswa::find($this->attributes['nis'])->siswa;
     }
 
-    public function kelas()
-    {
-        return $this->hasMany(Kelas::class, 'id_pengurus');
-    }
+
+
 }

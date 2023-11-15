@@ -13,10 +13,10 @@
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">
-                    <a href="dashboard/siswa">
+                    <a href="walikelas/siswa">
                         <h3 class="card-title">JUMLAH SISWA</h3>
                     </a>
-                    <h1 class="fw-bold">{{ $jumlah_siswa }}</h1>
+                    <h1 class="fw-bold">{{ $jumlah_siswa_per_kelas }}</h1>
                 </div>
                 <img src="{{ asset('img/group.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
@@ -60,6 +60,17 @@
             </div>
         </div>
         @elseif (Auth::check() && Auth::user()->role == 'tatausaha')
+        <div class="col-md-4">
+            <div class="card text-center bg-white">
+                <div class="card-body">
+                    <a href="dashboard/siswa">
+                        <h3 class="card-title">JUMLAH SISWA</h3>
+                    </a>
+                    <h1 class="fw-bold">{{ $jumlah_siswa }}</h1>
+                </div>
+                <img src="{{ asset('img/group.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">

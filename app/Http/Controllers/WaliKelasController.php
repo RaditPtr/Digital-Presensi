@@ -26,29 +26,37 @@ class WaliKelasController extends Controller
         return view('layout.layout', $data);
     }
 
-    public function indexSiswa(tbl_user $tbl_user)
+    public function indexSiswa(tbl_user $tbl_user, Siswa $siswa)
     {
-        $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
-        // $auth = Auth::user();
+        $auth = Auth::user()->id_user;
+        // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
+        $tampilkan_siswa = DB::table('view_siswa')
+        ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+        ->where('guru.id_user', $auth)
+        ->get();
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
             
             'siswa' => $tampilkan_siswa,
-            // 'siswa' => $siswa->all(),
+            // 'siswa' => $siswa->get()->where('kelas.id_kelas', $auth->id_kelas),
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
             // 'akun' => $tbl_user
             // ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            // ->join('wali_kelas', 'guru.id_guru', '=', 'wali_kelas.id_guru')
+            // ->join('kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
             // ->where('guru.id_user', $auth->id_user)->first()
         ];
 
+        // dd($data);
 
 
         return view('siswa.index', $data);
     }
 
-    public function createSiswa(Siswa $siswa ,Kelas $kelas)
+    public function createSiswa(Siswa $siswa ,Kelas $kelas, tbl_user $tbl_user)
     {
 
 
@@ -56,9 +64,19 @@ class WaliKelasController extends Controller
             ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
             ->get();
         $siswa = $siswa->all();
+        $auth = Auth::user()->id_user;
+        $akun = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->join('wali_kelas', 'guru.id_guru', '=', 'wali_kelas.id_guru')
+            ->join('kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+            ->where('guru.id_user', $auth)->first();
+
+        // $data = [
+        //     'akun' 
+        // ];
 
         // dd($kelas);
-        return view("siswa.tambah", ["kelas" => $kelas, "siswa" => $siswa]);
+        return view("siswa.tambah", ["kelas" => $kelas, "siswa" => $siswa, "akun" => $akun]);
     }
 
     /**
@@ -89,7 +107,7 @@ class WaliKelasController extends Controller
             $data['nis'], $data['id_user'],
             $data['id_kelas'], $data['nama_siswa'], $data['jenis_kelamin'], $data['foto_siswa']
         ])) {
-            return redirect()->to('dashboard/siswa')->with("success", "Data siswa Berhasil Ditambahkan");
+            return redirect()->to('dashboard/walikelas')->with("success", "Data siswa Berhasil Ditambahkan");
         } else {
             return back()->with("error", "Data siswa Gagal Ditambahkan");
         }

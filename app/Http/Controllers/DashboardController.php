@@ -14,7 +14,13 @@ class DashboardController extends Controller
 {
     public function JumlahData()
     {
+        $auth = Auth::user()->id_user;
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
+        $totalsiswaperkelas = DB::table('siswa') ->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+            ->where('guru.id_user', $auth)
+            ->get();
         $totalkelas = DB::select('SELECT CountKelas() AS TotalKelas');
         $totalpresensi = DB::select('SELECT CountPresensi() AS TotalPresensi');
 
@@ -23,7 +29,8 @@ class DashboardController extends Controller
         $data = [
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
             'jumlah_kelas' => $totalkelas[0]->TotalKelas,
-            'jumlah_presensi' => $totalpresensi[0]->TotalPresensi
+            'jumlah_presensi' => $totalpresensi[0]->TotalPresensi,
+            'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
         ];
 
         return view('dashboard.index', $data);

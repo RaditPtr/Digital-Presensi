@@ -2,7 +2,7 @@
 @section('title', 'Daftar siswa')
 @section('content')
 
-<div class="row">
+<!-- <div class="row">
 
             <div class="card-header">
                 <span class="h1">
@@ -15,7 +15,6 @@
                         <a href="siswa/tambah">
                             <btn class="btn btn-success">Tambah Siswa</btn>
                         </a>
-                        <h3>jumlah siswa : {{ $jumlah_siswa }}</h3>
 
                     </div>
                     <p>
@@ -55,6 +54,44 @@
             <div class="card-footer">
 
             </div>
+</div> -->
+
+<div class="container">
+    <h1>Kelola Siswa</h1>
+    <table class="bootstrap-table table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">NO</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Nis</th>
+                <th scope="col">Nama Lengkap</th>
+                <th scope="col">Jenkel</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($siswa as $s)
+            <tr>
+                <td>1</td>
+                <td>
+                    @if ($s->foto_siswa)
+                    <img src="{{ url('foto') . '/' . $s->foto_siswa }} " style="max-width: 250px; height: auto;" />
+                    @endif
+                </td>
+                <td class="text-align: center;">{{ $s->nis }}</td>
+                <td>{{ $s->nama_siswa }}</td>
+                <td>{{ $s->jenis_kelamin }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+
+
+    </table>
+
+
 </div>
 @endsection
 

@@ -24,16 +24,17 @@ class Siswa extends Model
     }
 
 
-
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+    
     public function getKelasAttribute()
     {
         return Kelas::find($this->attributes['id_kelas'])->kelas;
     }
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class);
-    }
+    
 
 
     public function presensi_siswa()
@@ -41,6 +42,11 @@ class Siswa extends Model
         return $this->hasMany(PresensiSiswa::class, 'nis');
     }
 
+
+    public function pengurus_kelas()
+    {
+        return $this->hasMany(PengurusKelas::class, 'nis');
+    }
     
 
     

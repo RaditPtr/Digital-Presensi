@@ -45,6 +45,26 @@ class TblUserSeeder extends Seeder
                 'role' => 'siswa',
                 'password' => Hash::make('123')
             ],
+            [
+                'username' => 'siswa4',
+                'role' => 'siswa',
+                'password' => Hash::make('123')
+            ],
+            [
+                'username' => 'siswa5',
+                'role' => 'siswa',
+                'password' => Hash::make('123')
+            ],
+            [
+                'username' => 'siswa6',
+                'role' => 'siswa',
+                'password' => Hash::make('123')
+            ],
+            [
+                'username' => 'siswa7',
+                'role' => 'siswa',
+                'password' => Hash::make('123')
+            ],
         ];
 
         // Melakukan looping data dengan foreach

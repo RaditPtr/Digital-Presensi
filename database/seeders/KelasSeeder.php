@@ -17,10 +17,10 @@ class KelasSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $datas = [1, 2, 3, 4, 5];
+        $datas = [1, 2, 3, 4];
 
         foreach ($datas as $data) {
-            for ($i = 1; $i <= 5; $i++) {
+            for ($i = 1; $i <= 1; $i++) {
                 DB::table('kelas')->insert([
                     'id_angkatan' => $data,
                     'id_jurusan' => $data,

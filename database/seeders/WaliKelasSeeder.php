@@ -17,7 +17,7 @@ class WaliKelasSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $datas = [1, 2, 3, 4, 5];
+        $datas = [1, 2, 3, 4];
 
         foreach ($datas as $data) {
             for ($i = 1; $i <= 1; $i++) {

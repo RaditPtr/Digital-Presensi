@@ -19,11 +19,11 @@
                                 <div class="form-group">
                                     <label>Kelas</label>
                                     <select name="id_kelas" class="form-control">
-                                        @foreach ($kelas as $i)
-                                        <option value="{{ $i->id_kelas }}">
-                                            {{ $i->nama_kelas }}
+                                        <!-- @foreach ($akun as $i) -->
+                                        <option value="{{ $akun->id_kelas }}" selected>
+                                            {{ $akun->nama_kelas }}
                                         </option>
-                                        @endforeach
+                                        <!-- @endforeach -->
                                     </select>
                                 </div>
                                 <!-- <div class="form-group">

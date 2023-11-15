@@ -41,6 +41,38 @@
         nav {
             background-color: #ccf1ff;
         }
+
+        .bootstrap-table {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .bootstrap-table table {
+            border-collapse: collapse;
+        }
+
+        .bootstrap-table table td,
+        .bootstrap-table table th {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+        }
+
+        
+
+        .bootstrap-table table th {
+            background-color: #f5f5f5;
+        }
+
+        .bootstrap-table table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .bootstrap-table table .aksi {
+            text-align: center;
+        }
     </style>
 </head>
 
