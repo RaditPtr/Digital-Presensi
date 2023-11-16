@@ -58,6 +58,12 @@
 
 <div class="container">
     <h1>Kelola Siswa</h1>
+    <div class="col-md-4">
+        <a href="siswa/tambah">
+            <btn class="btn btn-success">Tambah Siswa</btn>
+        </a>
+
+    </div>
     <table class="bootstrap-table table table-bordered">
         <thead>
             <tr>
@@ -83,6 +89,10 @@
                 <td>{{ $s->jenis_kelamin }}</td>
                 <td>
                     <a href="#" class="btn btn-primary btn-sm">Detail</a>
+                    <a href="siswa/edit/{{ $s->nis }}">
+                        <btn class="btn btn-primary">EDIT</btn>
+                    </a>
+                    <btn class="btn btn-danger btnHapus" idNis="{{ $s->nis }}">HAPUS</btn>
                 </td>
             </tr>
             @endforeach

@@ -26,14 +26,13 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                <label>Status</label>
-                                <select name="status_hadir" class="form-control">
-                                    <option value="Hadir">Hadir</option>
-                                    <option value="Izin">Izin</option>
-                                    <option value="Alpha">Alpha</option>
+                                <label>Jabatan</label>
+                                <select name="jabatan" class="form-control">
+                                    <option value="Ketua kelas">Ketua kelas</option>
+                                    <option value="Wakil kelas">Wakil kelas</option>
+                                    <option value="Sekretaris">Sekretaris</option>
+                                    <option value="Bendahara">Bendahara</option>
                                 </select>
-                                <label>Foto Bukti</label>
-                                <input type="file" class="form-control" name="foto_bukti" />
                                 @csrf
                             </div>
                             <div class="col-md-4 mt-3">

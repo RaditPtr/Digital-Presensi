@@ -15,6 +15,7 @@ return new class extends Migration
         DB::unprepared("DROP VIEW IF EXISTS view_siswa;");
         DB::unprepared("DROP VIEW IF EXISTS view_kelas;");
         DB::unprepared("DROP VIEW IF EXISTS view_presensi;");
+        DB::unprepared("DROP VIEW IF EXISTS view_pengurus;");
 
         DB::unprepared("
         CREATE VIEW view_siswa AS
@@ -56,6 +57,16 @@ return new class extends Migration
         p.foto_bukti AS foto_bukti
         FROM presensi_siswa p
         INNER JOIN siswa s ON p.nis = s.nis;
+        ");
+
+        DB::unprepared("
+        CREATE VIEW view_pengurus AS
+        SELECT
+        e.nis AS nis,
+        s.nama_siswa AS nama_siswa,
+        e.jabatan AS jabatan
+        FROM pengurus_kelas e
+        INNER JOIN siswa s ON e.nis = s.nis;
         ");
 
     

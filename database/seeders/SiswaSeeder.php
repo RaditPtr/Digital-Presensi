@@ -17,15 +17,15 @@ class SiswaSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
     
-        $datas = [4, 5, 6];
+        $datas = [4];
         $datakelas = [1, 2, 3 ,4];
     
         foreach ($datas as $data) {
-            for ($i = 1; $i <= 1; $i++) {
+            for ($i = 1; $i <= 9; $i++) {
                 DB::table('siswa')->insert([
                     'nis' => $faker->numerify('2########'),
                     'id_user' => $data,
-                    'id_kelas' => $datakelas,
+                    'id_kelas' => $data,
                     'nama_siswa' => $faker->name(),
                     'jenis_kelamin' => Arr::random(['laki-laki', 'perempuan']),
                     'foto_siswa' => $faker->image(),

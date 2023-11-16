@@ -6,7 +6,10 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\tbl_user;
 use App\Models\guru;
+use App\Models\PengurusKelas;
 use App\Models\PresensiSiswa;
+use App\Models\Pengurus;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -107,7 +110,7 @@ class WaliKelasController extends Controller
             $data['nis'], $data['id_user'],
             $data['id_kelas'], $data['nama_siswa'], $data['jenis_kelamin'], $data['foto_siswa']
         ])) {
-            return redirect()->to('dashboard/walikelas')->with("success", "Data siswa Berhasil Ditambahkan");
+            return redirect()->to('dashboard/walikelas/siswa')->with("success", "Data siswa Berhasil Ditambahkan");
         } else {
             return back()->with("error", "Data siswa Gagal Ditambahkan");
         }
@@ -139,7 +142,7 @@ class WaliKelasController extends Controller
             [
                 'nama_siswa' => 'sometimes',
                 'jenis_kelamin' => 'sometimes',
-                'id_kelas' => 'sometimes',
+                // 'id_kelas' => 'sometimes',
                 'foto_siswa' => 'sometimes|file'
             ]
         );
@@ -159,7 +162,7 @@ class WaliKelasController extends Controller
 
             $dataUpdate = $siswa->where('nis', $nis)->update($data);
             if ($dataUpdate) {
-                return redirect('dashboard/siswa')->with('success', 'Data Berhasil Diupdate');
+                return redirect('dashboard/walikelas/siswa')->with('success', 'Data Berhasil Diupdate');
             } else {
                 return back()->with('error', 'Data Gagal Diupdate');
             }
@@ -222,5 +225,83 @@ class WaliKelasController extends Controller
         ];
 
         return view('presensisiswa.index', $data);
+    }
+
+
+    public function indexPengurus()
+    {
+        $tampilkan_pengurus = DB::select(' SELECT * from view_pengurus');
+
+        $data = [
+            'pengurus' => $tampilkan_pengurus
+        ];
+        return view('pengurus.index', $data);
+    }
+
+    public function createPengurus(Siswa $siswa, Kelas $kelas, tbl_user $tbl_user)
+    {
+
+        // $siswa = DB::select(' SELECT * from view_siswa');
+        $auth = Auth::user()->id_user;
+        // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
+        $tampilkan_siswa = DB::table('view_siswa')
+        ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+        ->where('guru.id_user', $auth)
+        ->get();
+
+        return view("pengurus.tambah", ["siswa" => $tampilkan_siswa]);
+    }
+
+
+    public function storePengurus(Request $request)
+    {
+        $data = $request->validate(
+            [
+                'nis' => 'required',
+                'jabatan' => 'required'
+            ]
+        );
+
+        $store = DB::statement("CALL CreatePengurus(?,?)", [$data['nis'], $data['jabatan']]);
+        if ($store) {
+            return redirect('dashboard/walikelas/pengurus');
+        } else {
+            return back()->with('error', 'Data pengurus gagal ditambahkan');
+        }
+    }
+
+
+    public function editPengurus(Request $request, Siswa $siswa)
+    {
+        $data = [
+            "siswa" => $siswa->where('nis', $request->id)->first(),
+        ];
+        // dd($data);
+        return view('pengurus.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updatePengurus(Request $request, Siswa $siswa, PengurusKelas $pengurusKelas)
+    {
+        $nis = $request->input('nis');
+
+        $data = $request->validate(
+            [
+                'nama_siswa' => 'sometimes',
+                'jabatan' => 'sometimes',
+            ]
+        );
+        if ($nis !== null) {
+
+            $dataUpdate = $pengurusKelas->where('nis', $nis)->update($data);
+            if ($dataUpdate) {
+                return redirect('dashboard/walikelas/pengurus')->with('success', 'Data Berhasil Diupdate');
+            } else {
+                return back()->with('error', 'Data Gagal Diupdate');
+            }
+        }
     }
 }

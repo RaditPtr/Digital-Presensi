@@ -25,7 +25,9 @@
                             <label>Tanggal</label>
                             <p>{{$detail[0]->tanggal_presensi}}</p>
                             <label>Status</label>
-                            <p>{{$detail[0]->status_kehadiran}}</p>
+                            <p>{{$detail[0]->status_hadir}}</p>
+                            <label>Waktu Kehadiran</label>
+                            <p>{{$detail[0]->waktu_presensi}}</p>
                             @if ($detail[0]->foto_bukti)
                             <label>Foto Siswa</label>
                             <br>

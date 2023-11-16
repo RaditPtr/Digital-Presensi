@@ -42,14 +42,14 @@ class GuruPiketController extends Controller
         $data = [
             'siswa' => $siswa->all()
         ];
-        return view('presensiswa.tambah', $data);
+        return view('presensisiswa.tambah', $data);
     }
 
     public function storePresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
         $data = $request->validate([
-            'id_siswa' => 'required',
-            'status_kehadiran' => 'required',
+            'nis' => 'required',
+            'status_hadir' => 'required',
             'foto_bukti' => 'required',
         ]);
         if ($request->hasFile('foto_bukti') && $request->file('foto_bukti')->isValid()) {
@@ -64,9 +64,9 @@ class GuruPiketController extends Controller
         $user = Auth::user();
         $data['pembuat'] = $user->role;
 
-        $store = DB::statement("CALL CreatePresensi(?,?,?,?)", [$data['id_siswa'], $data['status_kehadiran'], $data['foto_bukti'], $data['pembuat']]);
+        $store = DB::statement("CALL CreatePresensi(?,?,?)", [$data['nis'], $data['status_hadir'], $data['foto_bukti']]);
         if ($store) {
-            return redirect('/guru-piket/presensi');
+            return redirect('dashboard/gurupiket/presensi');
         } else {
             return back()->with('error', 'Data presensi gagal ditambahkan');
         }
@@ -77,18 +77,18 @@ class GuruPiketController extends Controller
     {
         $data = [
             'detail' => $presensi->where('id_presensi', $request->id)
-                ->join('siswa', 'presensi.id_siswa', '=', 'siswa.id_siswa')
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
                 ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
         ];
         // dd($data);
-        return view('presensiswa.detail', $data);
+        return view('presensisiswa.detail', $data);
     }
 
     public function editPresensi(Request $request, PresensiSiswa $presensi)
     {
         $data = [
             'presensi' => $presensi->where('id_presensi', $request->id)
-                ->join('siswa', 'presensi.id_siswa', '=', 'siswa.id_siswa')->get()
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get()
         ];
         // dd($data);
         return view('presensisiswa.edit', $data);
@@ -98,7 +98,7 @@ class GuruPiketController extends Controller
     {
         $id_presensi = $request->id_presensi;
         $data = $request->validate([
-            'status_kehadiran' => 'sometimes',
+            'status_hadir' => 'sometimes',
             'foto_bukti' => 'sometimes'
         ]);
         if ($id_presensi !== null) {
@@ -115,12 +115,12 @@ class GuruPiketController extends Controller
             }
 
             $user = Auth::user();
-            $data['pembuat'] = $user->role;
+            // $data['pembuat'] = $user->role;
 
             $dataUpdate = $presensi->where('id_presensi', $id_presensi)->update($data);
 
             if ($dataUpdate) {
-                return redirect('guru-piket/presensi')->with('success', 'Data berhasil diupdate');
+                return redirect('dashboard/gurupiket/presensi')->with('success', 'Data berhasil diupdate');
             } else {
                 return back()->with('error', 'Data gagal diupdate');
             }

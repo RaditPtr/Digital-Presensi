@@ -43,6 +43,74 @@ return new class extends Migration
         END;
         ");
 
+        DB::unprepared('DROP PROCEDURE IF EXISTS CreatePresensi');
+        DB::unprepared("
+        CREATE PROCEDURE CreatePresensi(
+            IN new_nis INT,
+            IN new_status VARCHAR(255),
+            IN new_foto_bukti TEXT
+        )
+        BEGIN
+            DECLARE pesan_error CHAR(5) DEFAULT '000';
+
+            DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+            BEGIN
+                SET pesan_error = '001';
+            END;
+
+            START TRANSACTION; -- Memulai transaction
+
+            INSERT INTO presensi_siswa (nis, tanggal_presensi, status_hadir, waktu_presensi, foto_bukti)
+            VALUES (new_nis, CURDATE(), new_status, CURTIME(), new_foto_bukti);
+
+            IF pesan_error = '000' THEN
+                COMMIT; -- Commit jika tidak ada error
+            ELSE
+                ROLLBACK; -- Rollback jika terdapat error
+            END IF;
+        END 
+        ");
+
+
+        DB::unprepared('DROP PROCEDURE IF EXISTS CreatePengurus');
+        DB::unprepared("
+        CREATE PROCEDURE CreatePengurus(
+            IN new_nis INT,
+            IN new_jabatan VARCHAR(60)
+        )
+        BEGIN
+            DECLARE pesan_error CHAR(5) DEFAULT '000';
+
+            DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+            BEGIN
+                SET pesan_error = '001';
+            END;
+
+            START TRANSACTION; -- Memulai transaction
+
+            INSERT INTO pengurus_kelas (nis, jabatan)
+            VALUES (new_nis, new_jabatan);
+
+            -- SELECT
+            -- s.id_user AS id_user,
+            -- u.role AS role,
+            -- s.nis AS nis
+            -- FROM siswa s
+            -- INNER JOIN tbl_user u ON s.id_user = u.id_user;
+
+            -- UPDATE tbl_user SET role = 'penguruskelas'
+            -- WHERE nis = new_nis;
+
+
+            IF pesan_error = '000' THEN
+                COMMIT; -- Commit jika tidak ada error
+            ELSE
+                ROLLBACK; -- Rollback jika terdapat error
+            END IF;
+        END 
+        ");
+
+
     }
 
     /**
@@ -51,5 +119,6 @@ return new class extends Migration
     public function down(): void
     {
         DB::unprepared('DROP Procedure IF EXISTS CreateAkunSiswa');
+        DB::unprepared('DROP PROCEDURE IF EXISTS CreatePresensi');
     }
 };

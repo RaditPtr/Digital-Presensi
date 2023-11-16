@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerDashboard;
 use App\Http\Controllers\WaliKelasController;
+use App\Http\Controllers\GuruPiketController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LogsController;
@@ -45,6 +46,14 @@ Route::get('/home', function () {
                     Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
                     Route::post('/edit/simpan', [WaliKelasController::class, 'updateSiswa']);
                 });
+                Route::prefix('pengurus')->group(function () {
+                    Route::get('/', [WaliKelasController::class, 'indexPengurus']);
+                    Route::get('/tambah', [WaliKelasController::class, 'createPengurus']);
+                    Route::post('/simpan', [WaliKelasController::class, 'storePengurus']);
+                    Route::delete('/hapus', [WaliKelasController::class, 'destroyPengurus']);
+                    Route::get('/edit/{id}', [WaliKelasController::class, 'editPengurus']);
+                    Route::post('/edit/simpan', [WaliKelasController::class, 'updatePengurus']);
+                });
                 Route::get('/kelas', [WaliKelasController::class, 'indexKelas']);
                 Route::get('/presensi', [WaliKelasController::class, 'indexPresensiSiswa']);
             });
@@ -60,7 +69,7 @@ Route::get('/home', function () {
                 Route::prefix('/presensi')->group(function () {
                     Route::get('/', [GuruPiketController::class,'indexPresensi']);
                     Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
-                    Route::get('/simpan', [GuruPiketController::class, 'storePresensi']);
+                    Route::post('/simpan', [GuruPiketController::class, 'storePresensi']);
                     Route::delete('/hapus', [GuruPiketController::class, 'destroyPresensi']);
                     Route::get('/edit/{id}', [GuruPiketController::class, 'editPresensi']);
                     Route::post('/edit/simpan', [GuruPiketController::class, 'updatePresensi']);
