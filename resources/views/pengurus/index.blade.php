@@ -10,7 +10,7 @@
         </a>
 
     </div>
-    <table class="bootstrap-table table table-bordered">
+    <table class="bootstrap-table table table-bordered DataTable">
         <thead>
             <tr>
                 <th scope="col">NO</th>
@@ -21,15 +21,16 @@
         <tbody>
             @foreach ($pengurus as $e)
             <tr>
-                <td>1</td>
+                <td>{{$loop->iteration}}</td>
                 <td>{{ $e->nama_siswa }}</td>
                 <td>{{ $e->jabatan }}</td>
+                <td>{{$e->id_pengurus}}</td>
                 <td>
                     <!-- <a href="#" class="btn btn-primary btn-sm">Detail</a> -->
-                    <a href="pengurus/edit/{{ $e->nis }}">
+                    <a href="pengurus/edit/{{ $e->id_pengurus }}">
                         <btn class="btn btn-primary">EDIT</btn>
                     </a>
-                    <btn class="btn btn-danger btnHapus" idNis="{{ $e->nis }}">HAPUS</btn>
+                    <btn class="btn btn-danger btnHapus" idHapus="{{ $e->id_pengurus }}">HAPUS</btn>
                 </td>
             </tr>
             @endforeach
@@ -41,4 +42,41 @@
 
 </div>
 
+@endsection
+
+@section('footer')
+<script type="module">
+    $('.DataTable tbody').on('click', '.btnHapus', function(a) {
+        a.preventDefault();
+        let id_pengurus = $(this).closest('.btnHapus').attr('idHapus');
+        swal.fire({
+            title: "Apakah anda ingin menghapus data ini?",
+            showCancelButton: true,
+            confirmButtonText: 'Setuju',
+            cancelButtonText: `Batal`,
+            confirmButtonColor: 'red'
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //Ajax Delete
+                $.ajax({
+                    type: 'DELETE',
+                    url: 'pengurus/hapus',
+                    data: {
+                        id_pengurus: id_pengurus,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            swal.fire('Berhasil di hapus!', '', 'success').then(function() {
+                                //Refresh Halaman
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 @endsection

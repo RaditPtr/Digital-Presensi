@@ -10,7 +10,7 @@ class PengurusKelas extends Model
     use HasFactory;
     protected $table = 'pengurus_kelas';
     protected $primaryKey = 'id_pengurus';
-    protected $fillable = ['id_user', 'nis', 'jabatan'];
+    protected $fillable = ['nis', 'jabatan'];
     public $timestamps = false;
 
     public function siswa()

@@ -36,6 +36,7 @@
         body {
             min-height: 75rem;
             padding-top: 4.5rem;
+            font-family: 'Inter';
         }
 
         nav {
@@ -43,6 +44,7 @@
         }
 
         .bootstrap-table {
+            margin-top: 60px;
             width: 100%;
             margin-bottom: 1rem;
         }
@@ -58,7 +60,7 @@
             text-align: center;
         }
 
-        
+
 
         .bootstrap-table table th {
             background-color: #f5f5f5;
@@ -74,6 +76,7 @@
             text-align: center;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>

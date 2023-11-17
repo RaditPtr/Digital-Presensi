@@ -20,14 +20,17 @@ return new class extends Migration
         DB::unprepared("
         CREATE VIEW view_siswa AS
         SELECT
+            s.id_user AS id_user,
             s.id_kelas AS id_kelas,
+            u.role AS role,
             s.nama_siswa AS nama_siswa,	
             k.nama_kelas AS nama_kelas,
             s.foto_siswa AS foto_siswa,
             s.nis AS nis,
             s.jenis_kelamin AS jenis_kelamin
         FROM siswa s
-        INNER JOIN kelas k ON s.id_kelas = k.id_kelas;
+        INNER JOIN kelas k ON s.id_kelas = k.id_kelas
+        INNER JOIN tbl_user u ON s.id_user = u.id_user;
         ");
 
         DB::unprepared("
@@ -63,6 +66,7 @@ return new class extends Migration
         CREATE VIEW view_pengurus AS
         SELECT
         e.nis AS nis,
+        e.id_pengurus AS id_pengurus,
         s.nama_siswa AS nama_siswa,
         e.jabatan AS jabatan
         FROM pengurus_kelas e

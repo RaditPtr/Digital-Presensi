@@ -18,13 +18,14 @@ use Illuminate\Support\Facades\DB;
 class WaliKelasController extends Controller
 {
 
-    public function profilWalas(Tbl_user $tbl_user) {
+    public function profilWalas(Tbl_user $tbl_user)
+    {
         $auth = Auth::user();
 
         $data = [
             'akun' => $tbl_user
-            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
-            ->where('guru.id_user', $auth->id_user)->first()
+                ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+                ->where('guru.id_user', $auth->id_user)->first()
         ];
         return view('layout.layout', $data);
     }
@@ -35,14 +36,14 @@ class WaliKelasController extends Controller
         $auth = Auth::user()->id_user;
         // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
         $tampilkan_siswa = DB::table('view_siswa')
-        ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
-        ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
-        ->where('guru.id_user', $auth)
-        ->get();
+            ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+            ->where('guru.id_user', $auth)
+            ->get();
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
-            
+
             'siswa' => $tampilkan_siswa,
             // 'siswa' => $siswa->get()->where('kelas.id_kelas', $auth->id_kelas),
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
@@ -59,7 +60,7 @@ class WaliKelasController extends Controller
         return view('siswa.index', $data);
     }
 
-    public function createSiswa(Siswa $siswa ,Kelas $kelas, tbl_user $tbl_user)
+    public function createSiswa(Siswa $siswa, Kelas $kelas, tbl_user $tbl_user)
     {
 
 
@@ -175,9 +176,10 @@ class WaliKelasController extends Controller
     public function destroySiswa(Request $request, Siswa $siswa)
     {
         $nis = $request->input('nis');
-        $aksi = Siswa::where('nis', $nis)->delete();
+        $hapusSiswa = $siswa->where('nis', $nis)->delete();
+        // $aksi = Siswa::where('nis', $nis)->delete();
 
-        if ($aksi) {
+        if ($hapusSiswa) {
             $pesan = [
                 'success' => true,
                 'pesan' => 'Data berhasil di hapus'
@@ -243,18 +245,26 @@ class WaliKelasController extends Controller
 
         // $siswa = DB::select(' SELECT * from view_siswa');
         $auth = Auth::user()->id_user;
-        // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
         $tampilkan_siswa = DB::table('view_siswa')
         ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
         ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
         ->where('guru.id_user', $auth)
         ->get();
+        // $tampilkan_pengurus = DB::table('view_pengurus')
+        //     ->join('pengurus_kelas', 'view_pengurus.id_kelas', '=', 'kelas.id_kelas')//
+        //     ->join('siswa', 'siswa.nis', '=', 'view_pengurus.id_siswa')
+        //     ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+        //     ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+        //     ->join('tbl_user', 'view_siswa.id_user', '=', 'tbl_user.id_user')
+        //     ->where('guru.id_user', $auth)
+        //     ->get();
 
+        // dd($tampilkan_pengurus);
         return view("pengurus.tambah", ["siswa" => $tampilkan_siswa]);
     }
 
 
-    public function storePengurus(Request $request)
+    public function storePengurus(Request $request, tbl_user $tbl_user)
     {
         $data = $request->validate(
             [
@@ -265,6 +275,11 @@ class WaliKelasController extends Controller
 
         $store = DB::statement("CALL CreatePengurus(?,?)", [$data['nis'], $data['jabatan']]);
         if ($store) {
+            $siswaId = $request->input('nis');
+            $tbl_user->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+                ->where('siswa.nis', $siswaId)
+                ->update(['tbl_user.role' => 'pengurus']);
+
             return redirect('dashboard/walikelas/pengurus');
         } else {
             return back()->with('error', 'Data pengurus gagal ditambahkan');
@@ -272,11 +287,24 @@ class WaliKelasController extends Controller
     }
 
 
-    public function editPengurus(Request $request, Siswa $siswa)
+    public function editPengurus(Request $request, Siswa $siswa, PengurusKelas $pengurusKelas)
     {
+        // $data = [
+        //     // "siswa" => $siswa->where('nis', $request->id)->get(),
+        //     // "jabatan" =>
+        //     "pengurus" => 
+        //         $pengurusKelas->
+        //         join
+        //         // ->where('nis', $request->id)->first()
+        // ];
+
         $data = [
-            "siswa" => $siswa->where('nis', $request->id)->first(),
+            "pengurus" => $pengurusKelas
+                ->join('siswa', 'pengurus_kelas.nis', '=', 'siswa.nis')
+                ->where('id_pengurus', '=', $request->id)
+                ->first()
         ];
+
         // dd($data);
         return view('pengurus.edit', $data);
     }
@@ -286,22 +314,43 @@ class WaliKelasController extends Controller
      */
     public function updatePengurus(Request $request, Siswa $siswa, PengurusKelas $pengurusKelas)
     {
-        $nis = $request->input('nis');
+        $id_pengurus = $request->id_pengurus;
 
         $data = $request->validate(
             [
-                'nama_siswa' => 'sometimes',
+                // 'nama_siswa' => 'sometimes',
                 'jabatan' => 'sometimes',
             ]
         );
-        if ($nis !== null) {
 
-            $dataUpdate = $pengurusKelas->where('nis', $nis)->update($data);
+        // dd($data);
+        if ($id_pengurus != null) {
+
+            $dataUpdate = $pengurusKelas->where('id_pengurus', $id_pengurus)->update($data);
             if ($dataUpdate) {
                 return redirect('dashboard/walikelas/pengurus')->with('success', 'Data Berhasil Diupdate');
             } else {
                 return back()->with('error', 'Data Gagal Diupdate');
             }
         }
+    }
+
+    public function destroyPengurus(Request $request, PresensiSiswa $presensi, PengurusKelas $pengurusKelas)
+    {
+        $id_pengurus = $request->input('id_pengurus');
+        $hapusPengurus = $pengurusKelas->where('id_pengurus', $id_pengurus)->delete();
+        if ($hapusPengurus) {
+            $pesan = [
+                'success' => true,
+                'pesan' => 'Data berhasil di hapus'
+            ];
+        } else {
+            $pesan = [
+                'success' => false,
+                'pesan' => 'Data gagal di hapus'
+            ];
+        }
+
+        return response()->json($pesan);
     }
 }

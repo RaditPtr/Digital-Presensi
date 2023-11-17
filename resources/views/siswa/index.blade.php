@@ -1,6 +1,81 @@
 @extends('layout.layout')
 @section('title', 'Daftar siswa')
 @section('content')
+<style>
+    .btntambah {
+        background-color: #6FF745;
+        text-align: center;
+        width: 150px !important;
+        height: 35px !important;
+
+    }
+
+    .button {
+        text-align: center;
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: all 0.2s ease-in-out;
+        border: 1px solid black;
+        font-size: 14.5;
+        color: black;
+        border-radius: 10px;
+    }
+
+    .btnDetail {
+        background-color: #7EE6B9;
+    }
+
+    .btnDetail:hover {
+        background-color: #23a881;
+    }
+
+    .btnEdit {
+        background-color: #EAED2B;
+    }
+
+    .btnEdit:hover {
+        background-color: #c2c429;
+    }
+
+    .btnHapus {
+        background-color: #DB3223;
+    }
+
+    .btnHapus:hover {
+        background-color: #a62a1f;
+    }
+
+    .button:hover {
+        color: black;
+    }
+
+    .button:active {
+        background-color: #1f8e6b;
+    }
+
+    .listbtn {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .col-md-2 {
+        padding-left: 3%;
+        float: right;
+    }
+
+    .photo-container {
+        overflow: hidden;
+        width: 150px;
+        height: 200px;
+    }
+
+</style>
 
 <!-- <div class="row">
 
@@ -58,11 +133,12 @@
 
 <div class="container">
     <h1>Kelola Siswa</h1>
-    <div class="col-md-4">
+    <div class="col-md-2">
         <a href="siswa/tambah">
-            <btn class="btn btn-success">Tambah Siswa</btn>
+            <btn class="btn btn-success button btntambah">
+                <p>Tambah Siswa</p>
+            </btn>
         </a>
-
     </div>
     <table class="bootstrap-table table table-bordered">
         <thead>
@@ -81,18 +157,22 @@
                 <td>1</td>
                 <td>
                     @if ($s->foto_siswa)
-                    <img src="{{ url('foto') . '/' . $s->foto_siswa }} " style="max-width: 250px; height: auto;" />
-                    @endif
+                    <div class="photo-container">
+                        <img src="{{ url('foto') . '/' . $s->foto_siswa }} " style="max-width: 250px; height: auto;" />
+                        @endif
+                    </div>
                 </td>
                 <td class="text-align: center;">{{ $s->nis }}</td>
                 <td>{{ $s->nama_siswa }}</td>
                 <td>{{ $s->jenis_kelamin }}</td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                    <a href="siswa/edit/{{ $s->nis }}">
-                        <btn class="btn btn-primary">EDIT</btn>
+                <td class="listbtn">
+                    <a href="#" class="btn btn-sm button btnDetail">
+                        <p>Detail</p>
                     </a>
-                    <btn class="btn btn-danger btnHapus" idNis="{{ $s->nis }}">HAPUS</btn>
+                    <a href="siswa/edit/{{ $s->nis }}">
+                        <btn class="btn btn-sm button btnedit">Edit</btn>
+                    </a>
+                    <btn class="btn btn-sm button btnHapus" idNis="{{ $s->nis }}">Hapus</btn>
                 </td>
             </tr>
             @endforeach

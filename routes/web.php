@@ -88,9 +88,13 @@ Route::get('/home', function () {
             Route::get('/siswa', [DashboardController::class, 'jumlahData']);
         });
 
-        Route::prefix('dashboard')->middleware(['akses:penguruskelas'])->group(function () {
-            Route::get('/penguruskelas', [DashboardController::class, 'jumlahData']);
+        Route::prefix('dashboard')->middleware(['akses:pengurus'])->group(function () {
+            Route::get('/pengurus', [DashboardController::class, 'jumlahData']);
         });
+
+    Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {
+        Route::get('/tatausaha', [DashboardController::class, 'jumlahData']);
+    });
     
     // 
 
