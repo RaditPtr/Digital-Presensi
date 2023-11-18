@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<html>
 <head>
     @vite(['resources/sass/app.scss','resources/js/app.js'])
     <style>
         .spacer {
             margin-top: 20px;
             margin-bottom: 20px;
-
         }
 
         .tengah {
@@ -22,7 +19,7 @@
             background-color: #80B3FF;
         }
         .card{
-            height: 400px;
+            padding: 25px 0;
         }
         .cuy{
             margin: auto;
@@ -32,34 +29,38 @@
         }
         .logsy{
             text-align: center;
-            padding-bottom: 45px;
+            padding-bottom: 30px;
         }
         .label{
             padding-bottom: 5px;
         }
         .cet {
+            padding-top: 10px;
             padding-bottom: 10px;
         }
+        .gambar {
+            padding: 0px 20px;
+        }
+       img{
+        display: block;
+        margin: 20px auto; 
+       } 
     </style>
 </head>
 
 <body>
-    <div class="container spacer">
-    </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="col-lg-4 tengah">
                     <form method="POST">
-                        @csrf
                         <div class="card bg-white">
                             <div class="container cuy">
                                 <div class="row">
-                                    <div class="col-sm">
-                                        <img src={{ asset('img/loginpict.png') }} alt="description of myimage" width="300">
+                                    <div class="col-sm gambar">
+                                        <img src={{ asset('img/loginpict.png') }} alt="description of myimage" width="200">
                                     </div>
                                     <div class="col-sm nih">
-                                        
                                         <div>
                                             <h2 class="logsy">LOGIN</h2>
                                         </div>
@@ -70,7 +71,7 @@
                                         <div class="form-group cet">
                                             <label class="label">Password</label>
                                             <input type="password" class="form-control" name="password" placeholder="Masukkan Password" />
-                                            
+                                            @csrf
                                         </div>
                                         <button type="submit" name="submit" class="btn btn-success">LOGIN</button>
                                     </div>

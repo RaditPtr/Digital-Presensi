@@ -197,7 +197,6 @@ class WaliKelasController extends Controller
     //============================================================================
     public function indexKelas(Kelas $kelas)
     {
-
         $tampilkan_kelas = DB::select(' SELECT * from view_Kelas');
         // $totalkelas = DB::select('SELECT Countkelas() AS Totalkelas');
 

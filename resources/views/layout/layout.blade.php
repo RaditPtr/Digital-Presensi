@@ -36,87 +36,73 @@
         body {
             min-height: 75rem;
             padding-top: 4.5rem;
-            font-family: 'Inter';
         }
 
         nav {
             background-color: #ccf1ff;
         }
-
-        .bootstrap-table {
-            margin-top: 60px;
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-
-        .bootstrap-table table {
-            border-collapse: collapse;
-        }
-
-        .bootstrap-table table td,
-        .bootstrap-table table th {
-            border: 1px solid #dee2e6;
-            padding: 8px;
-            text-align: center;
-        }
-
-
-
-        .bootstrap-table table th {
-            background-color: #f5f5f5;
-        }
-
-        .bootstrap-table table img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-        }
-
-        .bootstrap-table table .aksi {
-            text-align: center;
-        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md fw-semibold fixed-top text-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">GeoPresensi</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url('dashboard/surat') }}">Dashboard</a>
+                        <a class="nav-link active" aria-current="page" href="{{ url('dashboard') }}">Dashboard</a>
                     </li>
+                    @if (Auth::check() && Auth::user()->role == 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/user') }}">Manage User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('jenis/surat') }}">Jenis Surat</a>
+                        </li>
+                    @endif
+
+                    <!-- Tambahkan logika untuk user -->
+                    @if (Auth::check() && Auth::user()->role == 'walikelas')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="listDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            List Data
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="listDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Pengurus Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Presensi Siswa</a>
+                            <!-- Tambahkan lebih banyak item dropdown sesuai kebutuhan -->
+                        </div>
+                    </li>
+                    @endif
+
+
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="listDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            List Data
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="listDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/akun') }}">Data Siswa per Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Guru</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Siswa</a>
+                            <!-- Tambahkan lebih banyak item dropdown sesuai kebutuhan -->
+                        </div>
+                    </li>
+                    @endif
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('transaksi/surat') }}">List</a>
+                        <a class="nav-link" href="{{ url('dashboard/logs') }}">Log Activity</a>
                     </li>
+                    
+                    
                 </ul>
-
-
-                <!-- Right links -->
-                <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
-
-                    <li class="nav-item dropdown p-10">
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
-                    </li>
-                </ul>
-                <div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </div>
-
-
                 <div class="d-flex">
                     <a href="{{ url('/logout') }}"><button class="btn btn-secondary">Logout</button></a>
                 </div>
@@ -124,7 +110,6 @@
         </div>
     </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <div class="container">
         @include('layout.flash-message')
         @yield('content')
@@ -133,5 +118,4 @@
 <footer>
     @yield('footer')
 </footer>
-
-</html>
+<html>

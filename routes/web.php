@@ -33,19 +33,19 @@ Route::get('/home', function () {
 });
 
     Route::middleware(['auth'])->group(function () {
-
         //Routes Walikelas
-        Route::prefix('dashboard')->middleware(['akses:walikelas'])->group(function () {
-            Route::prefix('/walikelas')->group(function () {
+            Route::prefix('dashboard')->middleware(['akses:walikelas'])->group(function () {
+            // Route::prefix('/walikelas')->group(function () {
                 Route::get('/', [DashboardController::class, 'jumlahData']);
-                Route::prefix('siswa')->group(function () {
-                    Route::get('/', [WaliKelasController::class, 'indexSiswa']);
-                    Route::get('/tambah', [WaliKelasController::class, 'createSiswa']);
-                    Route::post('/simpan', [WaliKelasController::class, 'storeSiswa']);
-                    Route::delete('/hapus', [WaliKelasController::class, 'destroySiswa']);
-                    Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
-                    Route::post('/edit/simpan', [WaliKelasController::class, 'updateSiswa']);
-                });
+                // Route::prefix('/siswa')->group(function () {
+                //     Route::get('/', [WaliKelasController::class, 'indexSiswa']);
+                //     Route::get('/tambah', [WaliKelasController::class, 'createSiswa']);
+                //     Route::post('/simpan', [WaliKelasController::class, 'storeSiswa']);
+                //     Route::delete('/hapus', [WaliKelasController::class, 'destroySiswa']);
+                //     Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
+                //     Route::post('/edit/simpan', [WaliKelasController::class, 'updateSiswa']);
+                // });
+                Route::get('/siswa', [WaliKelasController::class, 'indexSiswa']);
                 Route::prefix('pengurus')->group(function () {
                     Route::get('/', [WaliKelasController::class, 'indexPengurus']);
                     Route::get('/tambah', [WaliKelasController::class, 'createPengurus']);
@@ -56,13 +56,13 @@ Route::get('/home', function () {
                 });
                 Route::get('/kelas', [WaliKelasController::class, 'indexKelas']);
                 Route::get('/presensi', [WaliKelasController::class, 'indexPresensiSiswa']);
-            });
+            // });
             
         });
 
         //Routes Tatausaha
-        Route::prefix('dashboard')->middleware(['akses:gurupiket'])->group(function () {
-            Route::prefix('/gurupiket')->group(function () {
+        Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {
+            Route::prefix('/tatausaha')->group(function () {
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::get('/siswa', [GuruPiketController::class, 'indexSiswa']);
                 Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
@@ -84,9 +84,9 @@ Route::get('/home', function () {
             Route::get('/gurubk', [DashboardController::class, 'jumlahData']);
         });
 
-        Route::prefix('dashboard')->middleware(['akses:siswa'])->group(function () {
-            Route::get('/siswa', [DashboardController::class, 'jumlahData']);
-        });
+        // Route::prefix('dashboard')->middleware(['akses:siswa'])->group(function () {
+        //     Route::get('/siswa', [DashboardController::class, 'jumlahData']);
+        // });
 
         Route::prefix('dashboard')->middleware(['akses:pengurus'])->group(function () {
             Route::get('/pengurus', [DashboardController::class, 'jumlahData']);
