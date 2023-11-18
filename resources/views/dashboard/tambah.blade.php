@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <span class="h1">
+                    <span class="h1 content-header">
                         Tambah Data Guru
                     </span>
                 </div>

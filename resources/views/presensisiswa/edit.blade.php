@@ -9,9 +9,9 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header content-header">
                 <span class="h1">
-                    Edit Data Presensi
+                    Edit Presensi
                 </span>
             </div>
             <div class="card-body">
@@ -32,7 +32,7 @@
                                 <input type="file" class="form-control" name="foto_bukti" />
                                 @csrf
                             </div>
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-5 mt-3">
                                 <button type="submit" class="btn btn-primary">SIMPAN</button>
                                 <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
                             </div>

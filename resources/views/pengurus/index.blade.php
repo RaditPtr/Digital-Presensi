@@ -3,19 +3,20 @@
 @section('content')
 
 <div class="container">
-    <h1>Kelola Siswa</h1>
-    <div class="col-md-4">
+    <h1 class="content-header content-header">Daftar Pengurus</h1>
+    <div class="col-md-2">
         <a href="pengurus/tambah">
-            <btn class="btn btn-success">Tambah Pengurus</btn>
+            <btn class="btn btn-success button btntambah">Tambah Pengurus</btn>
         </a>
 
     </div>
     <table class="bootstrap-table table table-bordered DataTable">
         <thead>
             <tr>
-                <th scope="col">NO</th>
-                <th scope="col">Nama Pengurus</th>
-                <th scope="col">Jabatan</th>
+                <th scope="col" class="thead">NO</th>
+                <th scope="col" class="thead">Nama Pengurus</th>
+                <th scope="col" class="thead">Jabatan</th>
+                <th scope="col" class="thead">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -24,23 +25,20 @@
                 <td>{{$loop->iteration}}</td>
                 <td>{{ $e->nama_siswa }}</td>
                 <td>{{ $e->jabatan }}</td>
-                <td>{{$e->id_pengurus}}</td>
-                <td>
-                    <!-- <a href="#" class="btn btn-primary btn-sm">Detail</a> -->
-                    <a href="pengurus/edit/{{ $e->id_pengurus }}">
-                        <btn class="btn btn-primary">EDIT</btn>
+                <td class="listbtn">
+                    <a href="pengurus/edit/{{ $e->id_pengurus }}" class="btn btn-sm button btnEdit">
+                        <p>Edit</p>
                     </a>
-                    <btn class="btn btn-danger btnHapus" idHapus="{{ $e->id_pengurus }}">HAPUS</btn>
+                    <btn class="btn btn-sm button btnHapus" idHapus="{{ $e->id_pengurus }}">HAPUS</btn>
                 </td>
             </tr>
             @endforeach
         </tbody>
-
-
     </table>
-
-
 </div>
+
+
+
 
 @endsection
 

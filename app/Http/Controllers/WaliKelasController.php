@@ -67,7 +67,6 @@ class WaliKelasController extends Controller
         $kelas = $kelas
             ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
             ->get();
-        $siswa = $siswa->all();
         $auth = Auth::user()->id_user;
         $akun = $tbl_user
             ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
@@ -193,6 +192,16 @@ class WaliKelasController extends Controller
         return response()->json($pesan);
     }
 
+    public function detailSiswa(Request $request, Siswa $siswa)
+    {
+        $data = [
+            'detail' => $siswa->where('nis', $request->id)
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+        ];
+        // dd($data);
+        return view('siswa.detail', $data);
+    }
+
 
     //============================================================================
     public function indexKelas(Kelas $kelas)
@@ -215,24 +224,97 @@ class WaliKelasController extends Controller
         // dd($data);
         return view('kelas.index', $data);
     }
+
+    public function detailKelas(Request $request, Kelas $kelas)
+    {
+        $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();
+        $data = [
+            'detail' => $detailkelas
+                // ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ];
+        // dd($data);
+        return view('Kelas.detail', $data);
+    }
     //================================================================
 
 
-    public function indexPresensiSiswa()
+    public function indexPresensiSiswa(PresensiSiswa $presensi)
     {
-        $tampilkan_presensi = DB::select(' SELECT * from view_presensi');
+        $auth = Auth::user()->id_user;
+        $tampilkan_presensi = $presensi
+            ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->join('wali_kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+            ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')
+            ->where('guru.id_user', $auth)->get();
+        // $tampilkan_presensi = DB::table('view_presensi')
+        // ->where('guru.id_user', $auth)
+        // ->get();
 
         $data = [
             'presensi' => $tampilkan_presensi
         ];
 
+        // dd($data);
+
         return view('presensisiswa.index', $data);
     }
 
-
-    public function indexPengurus()
+    public function editPresensi(Request $request, PresensiSiswa $presensi)
     {
+        $data = [
+            'presensi' => $presensi->where('id_presensi', $request->id)
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get()
+        ];
+        // dd($data);
+        return view('presensisiswa.edit', $data);
+    }
+
+    public function updatePresensi(Request $request, PresensiSiswa $presensi)
+    {
+        $id_presensi = $request->id_presensi;
+        $data = $request->validate([
+            'status_hadir' => 'sometimes',
+            'foto_bukti' => 'sometimes'
+        ]);
+        if ($id_presensi !== null) {
+            if ($request->hasFile('foto_bukti') && $request->file('foto_bukti')->isValid()) {
+                $foto_file = $request->file('foto_bukti');
+                $foto_extension = $foto_file->getClientOriginalExtension();
+                $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_extension;
+                $foto_file->move(public_path('foto'), $foto_nama);
+
+                $update_data = $presensi->where('id_presensi', $id_presensi)->first();
+                File::delete(public_path('foto') . '/' . $update_data->file);
+
+                $data['foto_bukti'] = $foto_nama;
+            }
+
+            $user = Auth::user();
+            // $data['pembuat'] = $user->role;
+
+            $dataUpdate = $presensi->where('id_presensi', $id_presensi)->update($data);
+
+            if ($dataUpdate) {
+                return redirect('dashboard/walikelas/presensi')->with('success', 'Data berhasil diupdate');
+            } else {
+                return back()->with('error', 'Data gagal diupdate');
+            }
+        }
+    }
+
+
+    public function indexPengurus(PengurusKelas $pengurus)
+    {
+        $auth = Auth::user()->id_user;
         $tampilkan_pengurus = DB::select(' SELECT * from view_pengurus');
+        $tampilkan_pengurus = $pengurus
+        ->join('siswa', 'siswa.nis', '=', 'pengurus_kelas.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('wali_kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+        ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')
+        ->where('guru.id_user', $auth)->get();
+
 
         $data = [
             'pengurus' => $tampilkan_pengurus
@@ -335,11 +417,18 @@ class WaliKelasController extends Controller
         }
     }
 
-    public function destroyPengurus(Request $request, PresensiSiswa $presensi, PengurusKelas $pengurusKelas)
+    public function destroyPengurus(Request $request, PresensiSiswa $presensi,tbl_user $user, PengurusKelas $pengurusKelas)
     {
         $id_pengurus = $request->input('id_pengurus');
+        $siswaid = PengurusKelas::where('id_pengurus', $id_pengurus)->value('nis');
         $hapusPengurus = $pengurusKelas->where('id_pengurus', $id_pengurus)->delete();
+
         if ($hapusPengurus) {
+
+            $user->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.nis', $siswaid)
+            ->update(['tbl_user.role' => 'siswa']);
+
             $pesan = [
                 'success' => true,
                 'pesan' => 'Data berhasil di hapus'

@@ -21,6 +21,18 @@ class DashboardController extends Controller
             ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
             ->where('guru.id_user', $auth)
             ->get();
+        $totalpresensiperkelas = DB::table('presensi_siswa')->select(DB::raw('COUNT(*) as TotalPresensiPerKelas'))
+        ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('wali_kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+        ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')
+        ->where('guru.id_user', $auth)->get();
+        $totalpengurusperkelas = DB::table('pengurus_kelas')->select(DB::raw('COUNT(*) as TotalPengurusPerKelas'))
+        ->join('siswa', 'siswa.nis', '=', 'pengurus_kelas.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('wali_kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+        ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')
+        ->where('guru.id_user', $auth)->get();
         $totalkelas = DB::select('SELECT CountKelas() AS TotalKelas');
         $totalpresensi = DB::select('SELECT CountPresensi() AS TotalPresensi');
 
@@ -31,6 +43,8 @@ class DashboardController extends Controller
             'jumlah_kelas' => $totalkelas[0]->TotalKelas,
             'jumlah_presensi' => $totalpresensi[0]->TotalPresensi,
             'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
+            'jumlah_presensi_per_kelas' => $totalpresensiperkelas[0]->TotalPresensiPerKelas,
+            'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas
         ];
 
         return view('dashboard.index', $data);

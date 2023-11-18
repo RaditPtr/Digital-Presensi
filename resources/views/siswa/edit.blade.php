@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h1>Edit Data Siswa</h1>
+            <div class="card-header content-header">
+                <h1>Edit Siswa</h1>
             </div>
             <div class="card-body">
                 <form method="POST" action="simpan" enctype="multipart/form-data">
@@ -16,6 +16,7 @@
                                 <label for="nis">NIS</label>
                                 <input type="text" class="form-control" name="nis" value="{{ $siswa->nis }}" id="nis">
                             </div>
+                            @if (Auth::check() && Auth::user()->role == 'tatausaha')
                             <div class="form-group">
                                 <label for="id_kelas">Kelas</label>
                                 <select name="id_kelas" class="form-control" id="id_kelas">
@@ -26,10 +27,13 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
+                            <br>
                             <div class="form-group">
                                 <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" class="form-control" name="nama_siswa" value="{{ $siswa->nama_siswa }}" id="nama_siswa">
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
@@ -41,6 +45,7 @@
                                     </option>
                                 </select>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label for="foto_siswa">Foto Siswa</label>
                                 <input type="file" class="form-control" name="foto_siswa" id="foto_siswa">

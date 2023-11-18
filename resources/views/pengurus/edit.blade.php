@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h1>Edit Data pengurus</h1>
+            <div class="card-header content-header">
+                <h1>Edit pengurus</h1>
             </div>
             <div class="card-body">
                 <form method="POST" action="simpan">
@@ -13,9 +13,10 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label for="nama_siswa">Nama Siswa</label>
-                                <input type="text" class="form-control" name="nama_siswa" value="{{ $pengurus->nama_siswa }}" id="nama_siswa">
+                                <label  for="nama_siswa">Nama Siswa</label>
+                                <input type="text" class="form-control" name="nama_siswa" disabled value="{{ $pengurus->nama_siswa }}" id="nama_siswa">
                             </div>
+                            <br>
                             <input type="hidden" name="id_pengurus" value="{{ $pengurus->id_pengurus }}">
                             <div class="form-group">
                                 <label for="jabatan">Jabatan</label>
