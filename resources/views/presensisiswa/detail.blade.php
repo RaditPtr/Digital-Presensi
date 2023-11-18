@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Tambah Guru')
+@section('title', 'Detail Presensi')
 @section('content')
 <style>
     body {
@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header content-header">
                 <span class="h1">
                     Detail Presensi
                 </span>

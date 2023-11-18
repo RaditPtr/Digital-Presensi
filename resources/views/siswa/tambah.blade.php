@@ -1,50 +1,43 @@
 @extends('layout.layout')
-@section('title', 'Tambah Guru')
+@section('title', 'Tambah Siswa')
 @section('content')
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header content-header content-header">
                 <span class="h1">
-                    Tambah Data Siswa
+                    Tambah Siswa
                 </span>
             </div>
             <div class="card-body">
                 <form method="POST" action="simpan" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>NIS</label>
                                 <input type="text" class="form-control" name="nis" />
+                                <br>
                                 <div class="form-group">
                                     <label>Kelas</label>
                                     <select name="id_kelas" class="form-control">
-                                        <!-- @foreach ($akun as $i) -->
-                                        <option value="{{ $akun->id_kelas }}" selected>
-                                            {{ $akun->nama_kelas }}
-                                        </option>
-                                        <!-- @endforeach -->
-                                    </select>
-                                </div>
-                                <!-- <div class="form-group">
-                                    <label>Siswa</label>
-                                    <select name="id_kelas" class="form-control">
-                                        @foreach ($siswa as $i)
-                                        <option value="{{ $i->id_kelas }}">
-                                            {{ $i->nama_siswa }}
+                                        @foreach ($kelas as $k)
+                                        <option value="{{ $k->id_kelas }}" selected>
+                                            {{ $k->nama_kelas }}
                                         </option>
                                         @endforeach
                                     </select>
-                                </div> -->
+                                </div>
+                                <br>
                                 <label>Nama Siswa</label>
                                 <input type="text" class="form-control" name="nama_siswa" />
-
+                                <br>
                                 <label>Jenis Kelamin</label>
                                 <select class="form-select" name="jenis_kelamin" aria-label="Default select example">
                                     <option selected value="">Pilih Jenis kelamin</option>
                                     <option value="laki-laki">laki-laki</option>
                                     <option value="perempuan">perempuan</option>
                                 </select>
+                                <br>
                                 <label>Foto Siswa</label>
                                 <input type="file" class="form-control" name="foto_siswa" />
                                 @csrf

@@ -2,111 +2,97 @@
 @section('title', 'Daftar siswa')
 @section('content')
 <style>
-    .btntambah {
-        background-color: #6FF745;
-        text-align: center;
-        width: 150px !important;
-        height: 35px !important;
-
-    }
-
-    .button {
-        text-align: center;
-        width: 100px;
-        height: 30px;
-        border-radius: 5px;
-
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        font-weight: 800;
-        transition: all 0.2s ease-in-out;
-        border: 1px solid black;
-        font-size: 14.5;
-        color: black;
-        border-radius: 10px;
-    }
-
-    .btnDetail {
-        background-color: #7EE6B9;
-    }
-
-    .btnDetail:hover {
-        background-color: #23a881;
-    }
-
-    .btnEdit {
-        background-color: #EAED2B;
-    }
-
-    .btnEdit:hover {
-        background-color: #c2c429;
-    }
-
-    .btnHapus {
-        background-color: #DB3223;
-    }
-
-    .btnHapus:hover {
-        background-color: #a62a1f;
-    }
-
-    .button:hover {
-        color: black;
-    }
-
-    .button:active {
-        background-color: #1f8e6b;
-    }
-
-    .listbtn {
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .col-md-2 {
-        padding-left: 3%;
-        float: right;
-    }
-
     .photo-container {
         overflow: hidden;
         width: 150px;
         height: 200px;
     }
 
+    .listbtn {
+        height: 220px !important;
+    }
 </style>
 
+<!-- <div class="row">
 
+            <div class="card-header">
+                <span class="h1">
+                    Data siswa
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="siswa/tambah">
+                            <btn class="btn btn-success">Tambah Siswa</btn>
+                        </a>
+
+                    </div>
+                    <p>
+                    <table class="table table-hover table-bordered DataTable">
+                        <thead>
+                            <tr>
+                                <th>NIS</th>
+                                <th>NAMA SISWA</th>
+                                <th>JENIS KELAMIN</th>
+                                <th>FOTO SISWA</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($siswa as $s)
+                            <tr>
+                                <td>{{ $s->nis }}</td>
+                                <td>{{ $s->nama_siswa }}</td>
+                                <td>{{ $s->jenis_kelamin }}</td>
+                                <td>
+                                    @if ($s->foto_siswa)
+                                    <img src="{{ url('foto') . '/' . $s->foto_siswa }} " style="max-width: 250px; height: auto;" />
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="siswa/edit/{{ $s->nis }}">
+                                        <btn class="btn btn-primary">EDIT</btn>
+                                    </a>
+                                    <btn class="btn btn-danger btnHapus" idNis="{{ $s->nis }}">HAPUS</btn>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+
+            </div>
+</div> -->
 
 <div class="container">
-    <h1>Kelola Siswa</h1>
+    <h1 class="content-header">Daftar Siswa</h1>
     <div class="col-md-2">
-        @if (Auth::check() && Auth::user()->role == 'tatausaha')
+
         <a href="siswa/tambah">
             <btn class="btn btn-success button btntambah">
                 <p>Tambah Siswa</p>
             </btn>
         </a>
-        @endif
+
     </div>
     <table class="bootstrap-table table table-bordered">
         <thead>
             <tr>
-                <th scope="col">NO</th>
-                <th scope="col">Foto</th>
-                <th scope="col">Nis</th>
-                <th scope="col">Nama Lengkap</th>
-                <th scope="col">Jenkel</th>
-                @if (Auth::check() && Auth::user()->role == 'tatausaha')
-                <th scope="col">Aksi</th>
-                @endif
+                <th scope="col" class="thead">NO</th>
+                <th scope="col" class="thead">Foto</th>
+                <th scope="col" class="thead">Nis</th>
+                <th scope="col" class="thead">Nama Lengkap</th>
+                <th scope="col" class="thead">Jenkel</th>
+                <th scope="col" class="thead">Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($siswa as $s)
             <tr>
-                <td>1</td>
+                <td>{{$loop->iteration}}</td>
                 <td>
                     @if ($s->foto_siswa)
                     <div class="photo-container">
@@ -117,17 +103,17 @@
                 <td class="text-align: center;">{{ $s->nis }}</td>
                 <td>{{ $s->nama_siswa }}</td>
                 <td>{{ $s->jenis_kelamin }}</td>
-                @if (Auth::check() && Auth::user()->role == 'tatausaha')
                 <td class="listbtn">
-                    <a href="#" class="btn btn-sm button btnDetail">
+                    <a href="siswa/detail/{{$s->nis}}" class="btn btn-sm button btnDetail">
                         <p>Detail</p>
                     </a>
                     <a href="siswa/edit/{{ $s->nis }}">
                         <btn class="btn btn-sm button btnedit">Edit</btn>
                     </a>
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <btn class="btn btn-sm button btnHapus" idNis="{{ $s->nis }}">Hapus</btn>
+                    @endif
                 </td>
-                @endif
             </tr>
             @endforeach
         </tbody>

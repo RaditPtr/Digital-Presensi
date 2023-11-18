@@ -15,6 +15,8 @@ return new class extends Migration
         DB::unprepared('DROP FUNCTION IF EXISTS CountSiswa');
         DB::unprepared('DROP FUNCTION IF EXISTS CountKelas');
         DB::unprepared('DROP FUNCTION IF EXISTS CountPresensi');
+        DB::unprepared('DROP FUNCTION IF EXISTS CountPengurus');
+
 
         DB::unprepared('
         CREATE FUNCTION CountSiswa() RETURNS INT
@@ -42,6 +44,15 @@ return new class extends Migration
             RETURN total;
         END
         ');
+
+        DB::unprepared('
+        CREATE FUNCTION CountPengurus() RETURNS INT
+        BEGIN
+            DECLARE total INT;
+            SELECT COUNT(*) INTO total FROM pengurus_kelas;
+            RETURN total;
+        END
+        ');
     }
     
 
@@ -53,5 +64,6 @@ return new class extends Migration
         DB::unprepared('DROP Procedure IF EXISTS CreateSiswa');
         DB::unprepared('DROP Procedure IF EXISTS CreateKelas');
         DB::unprepared('DROP Procedure IF EXISTS CreatePresensi');
+        DB::unprepared('DROP Procedure IF EXISTS CreatePengurus');
     }
 };
