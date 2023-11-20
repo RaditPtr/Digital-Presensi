@@ -16,7 +16,8 @@ return new class extends Migration
         DB::unprepared('DROP FUNCTION IF EXISTS CountKelas');
         DB::unprepared('DROP FUNCTION IF EXISTS CountPresensi');
         DB::unprepared('DROP FUNCTION IF EXISTS CountPengurus');
-
+        DB::unprepared('DROP FUNCTION IF EXISTS CountTotalDataAkun');
+        DB::unprepared('DROP FUNCTION IF EXISTS CountTotalDataGuru');
 
         DB::unprepared('
         CREATE FUNCTION CountSiswa() RETURNS INT
@@ -53,6 +54,24 @@ return new class extends Migration
             RETURN total;
         END
         ');
+
+        DB::unprepared('
+        CREATE FUNCTION CountTotalDataAkun() RETURNS INT
+        BEGIN
+            DECLARE total INT;
+            SELECT COUNT(*) INTO total FROM tbl_user;
+            RETURN total;
+        END
+        ');
+
+        DB::unprepared('
+        CREATE FUNCTION CountTotalDataGuru() RETURNS INT
+        BEGIN
+            DECLARE total INT;
+            SELECT COUNT(*) INTO total FROM guru;
+            RETURN total;
+        END
+        ');
     }
     
 
@@ -61,6 +80,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::unprepared('DROP FUNCTION IF EXISTS CountTotalDataAkun');
+        DB::unprepared('DROP FUNCTION IF EXISTS CountTotalDataGuru');
         DB::unprepared('DROP Procedure IF EXISTS CreateSiswa');
         DB::unprepared('DROP Procedure IF EXISTS CreateKelas');
         DB::unprepared('DROP Procedure IF EXISTS CreatePresensi');

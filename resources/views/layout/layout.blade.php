@@ -204,14 +204,6 @@
                         <a class="nav-link active" aria-current="page" href="/dashboard/pengurus">Dashboard</a>
                         @endif
                     </li>
-                    @if (Auth::check() && Auth::user()->role == 'admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin/user') }}">Manage User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('jenis/surat') }}">Jenis Surat</a>
-                        </li>
-                    @endif
 
                     <!-- Tambahkan logika untuk user -->
                     @if (Auth::check() && Auth::user()->role == 'walikelas')
@@ -232,13 +224,14 @@
 
                     @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="listDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             List Data
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="listDropdown">
-                            <a class="dropdown-item" href="{{ url('dashboard/akun') }}">Data Siswa per Kelas</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/akun') }}">Data Akun</a>
                             <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Guru</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/kelas') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/siswa') }}">Data Siswa</a>
                             <!-- Tambahkan lebih banyak item dropdown sesuai kebutuhan -->
                         </div>
                     </li>

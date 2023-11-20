@@ -16,6 +16,7 @@ return new class extends Migration
         DB::unprepared("DROP VIEW IF EXISTS view_kelas;");
         DB::unprepared("DROP VIEW IF EXISTS view_presensi;");
         DB::unprepared("DROP VIEW IF EXISTS view_pengurus;");
+        DB::unprepared("DROP VIEW IF EXISTS view_guru;");
 
         DB::unprepared("
         CREATE VIEW view_siswa AS
@@ -86,7 +87,17 @@ return new class extends Migration
         INNER JOIN guru g ON w.id_guru = g.id_guru;
         ");
 
-    
+        DB::unprepared("
+        CREATE VIEW view_guru AS
+        SELECT 
+            guru.id_guru AS id_guru,
+            guru.foto_guru AS foto_guru,
+            tbl_user.id_user AS id_user,
+            tbl_user.username AS nama_guru
+        FROM guru
+        JOIN tbl_user ON guru.id_user = tbl_user.id_user
+        ORDER BY guru.id_guru ASC;
+        ");
     }
 
     /**
@@ -95,5 +106,6 @@ return new class extends Migration
     public function down(): void
     {
         DB::unprepared("DROP VIEW IF EXISTS view_siswa;");
+        DB::statement('DROP VIEW IF EXISTS view_guru');
     }
 };

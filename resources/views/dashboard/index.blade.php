@@ -94,6 +94,7 @@
                 <img src="{{ asset('img/teacher.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
+
         @elseif (Auth::check() && Auth::user()->role == 'tatausaha')
         <div class="col-md-4">
             <div class="card text-center bg-white">
@@ -109,12 +110,22 @@
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">
+                    <h3 class="card-title">JUMLAH GURU</h3>
+                    <h1 class="fw-bold">721</h1>
+                </div>
+                <img src="{{ asset('img/kelas3.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center bg-white">
+                <div class="card-body">
                     <h3 class="card-title">JUMLAH KELAS</h3>
                     <h1 class="fw-bold">721</h1>
                 </div>
                 <img src="{{ asset('img/kelas3.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
+
         @elseif (Auth::check() && Auth::user()->role == 'gurupiket')
         <div class="col-md-4">
             <div class="card text-center bg-white">

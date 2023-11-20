@@ -1,56 +1,51 @@
 @extends('layout.layout')
-@section('title', 'Daftar kelas')
+@section('title', 'Daftar Akun')
 @section('content')
 
 <div class="container">
-    <h1 class="content-header">Daftar Kelas</h1>
-    <div class="col-md-2">
-        @if (Auth::check() && Auth::user()->role == 'tatausaha')
-        <a href="kelas/tambah">
-            <btn class="btn btn-success button btntambah content-header">Tambah Kelas</btn>
-        </a>
-        @endif
-
+    <h1 class="content-header">Daftar Akun</h1>
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <span class="h4">
+                Jumlah Akun yang telah dibuat: {{ $jumlahAkun }}
+            </span>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="akun/tambah">
+                <btn class="btn btn-success button btntambah content-header">Tambah Akun</btn>
+            </a>
+        </div>
     </div>
     <table class="bootstrap-table table table-bordered DataTable">
         <thead>
             <tr>
-                <th scope="col" class="thead">No</th>
-                <th scope="col" class="thead">Nama Kelas</th>
-                <th scope="col" class="thead">Wali Kelas</th>
+                <th scope="col" class="thead">Nama</th>
+                <th scope="col" class="thead">Role</th>
                 <th scope="col" class="thead">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($kelas as $k)
-            <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{ $k->nama_kelas }}</td>
-                <td>{{ $k->nama_guru }}</td>
-                <td class="listbtn">
-                    <a href="kelas/detail/{{$k->id_kelas}}" class="btn btn-sm button btnDetail">
-                        <p>Detail</p>
-                    </a>
-                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
-                    <a href="kelas/edit/{{ $k->id_kelas }}" class="btn btn-sm button btnEdit">
-                        <p>Edit</p>
-                    </a>
-                    <btn class="btn btn-sm button btnHapus" idKelas="{{ $k->id_kelas }}">HAPUS</btn>
-                    @endif
-                </td>
-            </tr>
+            @foreach ($akun as $a)
+                <tr>
+                    <td>{{ $a->username }}</td>
+                    <td>{{ $a->role }}</td>
+                    <td class="listbtn">
+                        <a href="edit/{{ $a->id_user }}"><button class="btn btn-sm button btnEdit">EDIT</button></a>
+                        <button class="btn btn-sm button btnHapus" idUser="{{ $a->id_user }}">HAPUS</button>
+                    </td> 
+                </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-@endsection
 
+@endsection
 
 @section('footer')
     <script type="module">
         $('.DataTable tbody').on('click', '.btnHapus', function(a) {
             a.preventDefault();
-            let idKelas = $(this).closest('.btnHapus').attr('idKelas');
+            let idUser = $(this).closest('.btnHapus').attr('idUser');
             swal.fire({
                 title: "Apakah anda ingin menghapus data ini?",
                 showCancelButton: true,
@@ -63,9 +58,9 @@
                     //Ajax Delete
                     $.ajax({
                         type: 'DELETE',
-                        url: 'kelas/hapus',
+                        url: 'akun/hapus',
                         data: {
-                            id_kelas: idKelas,
+                            id_user: idUser,
                             _token: "{{ csrf_token() }}"
                         },
                         success: function(data) {

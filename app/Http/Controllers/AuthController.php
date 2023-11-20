@@ -32,17 +32,17 @@ class AuthController extends Controller
             
             Session::regenerateToken();
             if ($user->role == 'tatausaha') {
-                return redirect('dashboard/tatausaha');
+                return redirect('dashboard');
             } elseif ($user->role == 'walikelas') {
-                return redirect('dashboard/walikelas');
+                return redirect('dashboard');
             } elseif ($user->role == 'gurubk') {
-                return redirect('dashboard/gurubk');
+                return redirect('dashboard');
             } elseif ($user->role == 'gurupiket') {
-                return redirect('dashboard/gurupiket');
+                return redirect('dashboard');
             } elseif ($user->role == 'siswa') {
-                return redirect('dashboard/siswa');
+                return redirect('dashboard');
             } elseif ($user->role == 'penguruskelas') {
-                return redirect('dashboard/penguruskelas');
+                return redirect('dashboard');
             }   
         }
 

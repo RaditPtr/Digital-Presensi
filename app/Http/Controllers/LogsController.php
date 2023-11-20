@@ -12,7 +12,7 @@ class LogsController extends Controller
     public function index(Logs $logs)
     {
         $data = [
-            'logsy' => $logs::orderBy('id_logs', 'desc')->get()
+            'logsy' => $logs::orderBy('id_log', 'desc')->get()
         ];
 
         return view('logs.index', $data);
@@ -61,8 +61,17 @@ class LogsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Logs $logs)
+    public function destroy(Request $request)
     {
-        //
+        $id_log = $request->input('id_log');
+        // dd($id_logs);
+        
+        if ($id_log != null) {
+            foreach ($id_log as $id) {
+                Logs::where('id_log', $id)->delete();
+            }
+        }
+        return redirect()->to('/logst')->with('success', 'Data berhasil dihapus');
     }
+
 }

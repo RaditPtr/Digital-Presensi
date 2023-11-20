@@ -35,11 +35,16 @@ class WaliKelasController extends Controller
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         $auth = Auth::user()->id_user;
         // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
-        $tampilkan_siswa = DB::table('view_siswa')
-            ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
-            ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
-            ->where('guru.id_user', $auth)
-            ->get();
+        if (Auth::check() && Auth::user()->role == 'tatausaha') {
+            $tampilkan_siswa = DB::table('view_siswa')
+                ->get();
+        } else {
+            $tampilkan_siswa = DB::table('view_siswa')
+                ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+                ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+                ->where('guru.id_user', $auth)
+                ->get();
+        }
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
