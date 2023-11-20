@@ -73,6 +73,7 @@ Route::get('/home', function () {
         //Routes Tatausaha
         Route::prefix('dashboard')->middleware(['akses:gurupiket'])->group(function () {
             Route::prefix('/gurupiket')->group(function () {
+                Route::get('/profil', [GuruPiketController::class, 'profilGuru']);
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::get('/siswa', [GuruPiketController::class, 'indexSiswa']);
                 Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);

@@ -74,6 +74,36 @@ return new class extends Migration
         END
         ');
 
+        DB::unprepared('
+        CREATE TRIGGER add_presensi
+        BEFORE INSERT ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_presensi
+        AFTER UPDATE ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_presensi
+        AFTER DELETE ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
         
     }
 

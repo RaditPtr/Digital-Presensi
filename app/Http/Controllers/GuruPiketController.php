@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\File;
 
 class GuruPiketController extends Controller
 {
+    public function profilGuru(Tbl_user $tbl_user)
+    {
+        $auth = Auth::user();
+
+        $data = [
+            'akun' => $tbl_user
+                ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+                ->where('guru.id_user', $auth->id_user)->get()
+        ];
+
+        // dd($data);
+        return view('profil.profilguru', $data);
+    }
+
+
     public function indexSiswa(Siswa $siswa)
     {
         $data = [

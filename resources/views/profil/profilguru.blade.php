@@ -34,8 +34,7 @@
                             @if ($akun[0]->foto_guru)
                             <div class="photo-container p-2" style="border-radius: 50%;">
                                 <img src="{{ url('foto') . '/' . $akun[0]->foto_guru }} " style="max-width: 250px; height: auto;" />
-                                <!-- <img src="boy1.jpg" style="max-width: 250px; height: auto;" /> -->
-                                
+
                             </div>
                             @endif
                         </div>
@@ -44,16 +43,20 @@
                                 <tbody>
                                     <tr>
                                         <td class="fw-bolder col1">Username</td>
-
                                         <td class="fw-bolder col1">nama guru</td>
+                                        @if (Auth::check() && Auth::user()->role == 'walikelas')
+                                        <td class="fw-bolder col1">Mengurus kelas</td>
+                                        @endif
                                     </tr>
                                     <tr>
-
                                         <td class="col1">{{ $akun[0]->username }}</td>
                                         <td class="col1">{{ $akun[0]->nama_guru }}</td>
+                                        @if (Auth::check() && Auth::user()->role == 'walikelas')
+                                        <td class="col1">{{ $akun[0]->nama_kelas }}</td>
+                                        @endif
                                     </tr>
 
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                         <div class="p-2 d-flex justify-content-center">

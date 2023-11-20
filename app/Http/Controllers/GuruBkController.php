@@ -54,6 +54,7 @@ class GuruBkController extends Controller
         return view('siswa.detail', $data);
     }
 
+    
     public function detailKelas(Request $request)
     {
         $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();

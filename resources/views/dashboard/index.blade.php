@@ -180,10 +180,8 @@
             <div class="card text-center bg-white">
                 <div class="card-body">
                     <a href="siswa/presensi/tambah">
-                        <h3 class="card-title">JUMLAH PRESENSI</h3>
+                        <h3 class="card-title">ISI <br> PRESENSI</h3>
                     </a>
-
-                    <h1 class="fw-bold">{{ $jumlah_presensi }}</h1>
                 </div>
                 <img src="{{ asset('img/teacher.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>

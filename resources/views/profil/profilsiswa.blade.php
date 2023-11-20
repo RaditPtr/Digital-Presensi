@@ -35,7 +35,7 @@
                             <div class="photo-container p-2" style="border-radius: 50%;">
                                 <img src="{{ url('foto') . '/' . $akun[0]->foto_siswa }} " style="max-width: 250px; height: auto;" />
                                 <!-- <img src="boy1.jpg" style="max-width: 250px; height: auto;" /> -->
-                                
+
                             </div>
                             @endif
                         </div>
@@ -44,29 +44,27 @@
                                 <tbody>
                                     <tr>
                                         <td class="fw-bolder col1">Username</td>
-
                                         <td class="fw-bolder col1">Nama Siswa</td>
+                                        <td class="fw-bolder col1">NIS</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col1">{{ $akun[0]->username }}</td>
+                                        <td class="col1">{{ $akun[0]->nama_siswa }}</td>
+                                        <td class="col1">{{ $akun[0]->nis }}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bolder col1">Jenis Kelamin</td>
+                                        <td class="fw-bolder col1">Kelas</td>
                                     </tr>
                                     <tr>
 
-                                        <td class="col1">{{ $akun[0]->username }}</td>
-                                        <td class="col1">{{ $akun[0]->nama_siswa }}</td>
+                                        <td class="col1">{{ $akun[0]->jenis_kelamin }}</td>
+                                        <td class="col1">{{ $akun[0]->nama_kelas }}</td>
                                     </tr>
 
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bolder col1">Jenis Kelamin</td>
-    
-                                            <td class="fw-bolder col1">Kelas</td>
-                                        </tr>
-                                        <tr>
-    
-                                            <td class="col1">{{ $akun[0]->jenis_kelamin }}</td>
-                                            <td class="col1">{{ $akun[0]->nama_kelas }}</td>
-                                        </tr>
-    
-                                        </tbody>
+                                </tbody>
                             </table>
                         </div>
                         <div class="p-2 d-flex justify-content-center">
