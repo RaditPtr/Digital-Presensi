@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                @if (Auth::check() && Auth::user()->role != 'siswa')
+                                @if (Auth::check() && Auth::user()->role != 'siswa' && Auth::check() && Auth::user()->role != 'pengurus' )
                                 <label>Siswa</label>
                                 <select name="nis" class="form-control">
                                     @foreach ($siswa as $s)
@@ -28,7 +28,7 @@
                                     @endforeach
                                 </select>
                                 @endif
-                                @if (Auth::check() && Auth::user()->role == 'siswa')
+                                @if (Auth::check() && Auth::user()->role == 'siswa' || Auth::check() && Auth::user()->role == 'pengurus')
                                 <label>Siswa</label>
                                 <input type="text" class="form-control" disabled value="{{$siswa[0]->nama_siswa}}">
                                 <select hidden name="nis" class="form-control">
@@ -42,8 +42,8 @@
                                 <select name="status_hadir" class="form-control">
                                     <option value="Hadir">Hadir</option>
                                     <option value="Izin">Izin</option>
-                                    @if (Auth::check() && Auth::user()->role != 'siswa')
-                                        <option value="Alpha">Alpha</option>
+                                    @if (Auth::check() && Auth::user()->role != 'siswa' || Auth::check() && Auth::user()->role != 'pengurus')
+                                    <option value="Alpha">Alpha</option>
                                     @endif
                                 </select>
                                 <label>Foto Bukti</label>

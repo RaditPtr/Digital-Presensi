@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function JumlahData(Tbl_user $tbl_user)
+    public function JumlahData(Tbl_user $tbl_user, Siswa $siswa)
     {
+
         $auth = Auth::user()->id_user;
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
         $totalsiswaperkelas = DB::table('siswa') ->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
@@ -41,6 +42,18 @@ class DashboardController extends Controller
             ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
             ->where('guru.id_user', $auth->id_user)->get();
 
+        $ambildataakun = $siswa
+        ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
+        ->where('siswa.id_user', Auth::user()->id_user)->get();
+        $totalsiswaperkelaspengurus = DB::table('siswa')->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)
+        ->get();
+        $totalpresensiperkelaspengurus = DB::table('presensi_siswa')->select(DB::raw('COUNT(*) as TotalPresensiPerKelas'))
+        ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)->get();
+
 
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
@@ -51,7 +64,10 @@ class DashboardController extends Controller
             'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
             'jumlah_presensi_per_kelas' => $totalpresensiperkelas[0]->TotalPresensiPerKelas,
             'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas,
-            'akun' => $akun
+            'akun' => $akun,
+            'jumlah_siswa_per_kelas_pengurus' => $totalsiswaperkelaspengurus[0]->TotalSiswaPerKelas,
+            'jumlah_presensi_per_kelas_pengurus' => $totalpresensiperkelaspengurus[0]->TotalPresensiPerKelas,
+
         ];
 
         return view('dashboard.index', $data);

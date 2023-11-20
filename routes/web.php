@@ -7,10 +7,12 @@ use App\Http\Controllers\ControllerDashboard;
 use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\GuruPiketController;
 use App\Http\Controllers\GuruBkController;
+use App\Http\Controllers\PengurusKelasController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\SiswaController;
+use App\Models\PengurusKelas;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +75,7 @@ Route::get('/home', function () {
         //Routes Tatausaha
         Route::prefix('dashboard')->middleware(['akses:gurupiket'])->group(function () {
             Route::prefix('/gurupiket')->group(function () {
-                Route::get('/profil', [GuruPiketController::class, 'profilGuru']);
+                Route::get('/profil', [GuruPiketController::class, 'profilGurube']);
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::get('/siswa', [GuruPiketController::class, 'indexSiswa']);
                 Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
@@ -123,7 +125,19 @@ Route::get('/home', function () {
         });
 
         Route::prefix('dashboard')->middleware(['akses:pengurus'])->group(function () {
-            Route::get('/pengurus', [DashboardController::class, 'jumlahData']);
+        Route::prefix('/pengurus')->group(function () {
+            Route::get('/profil', [PengurusKelasController::class, 'profilSiswa']);
+            Route::get('/', [DashboardController::class, 'jumlahData']);
+            Route::get('/siswa', [PengurusKelasController::class, 'indexSiswa']);
+            Route::get('/siswa/detail/{id}', [PengurusKelasController::class, 'detailSiswa']);
+
+            Route::get('/kelas/detail/{id}', [PengurusKelasController::class, 'detailKelas']);
+            Route::get('/presensi', [PengurusKelasController::class, 'indexPresensiSiswa']);
+            Route::get('/presensi/tambah', [PengurusKelasController::class, 'createPresensi']);
+            Route::post('/presensi/simpan', [PengurusKelasController::class, 'storePresensi']);
+            Route::get('/presensi/detail/{id}', [PengurusKelasController::class, 'detailPresensi']);
+
+        });
         });
 
         Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {

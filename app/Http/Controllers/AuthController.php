@@ -41,8 +41,8 @@ class AuthController extends Controller
                 return redirect('dashboard/gurupiket');
             } elseif ($user->role == 'siswa') {
                 return redirect('dashboard/siswa');
-            } elseif ($user->role == 'penguruskelas') {
-                return redirect('dashboard/penguruskelas');
+            } elseif ($user->role == 'pengurus') {
+                return redirect('dashboard/pengurus');
             }   
         }
 
