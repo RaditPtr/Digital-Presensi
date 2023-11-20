@@ -12,6 +12,7 @@ use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\TataUsahaController;
 use App\Http\Controllers\TblUserController;
 
 /*
@@ -139,45 +140,45 @@ Route::get('/home', function () {
         Route::post('/presensi/edit/simpan', [WaliKelasController::class, 'updatePresensi']);
     });
 
-    //Routes Tatausaha
-    // Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {
-    //         Route::get('/', [DashboardController::class, 'jumlahData']);
-    //         Route::prefix('siswa')->group(function () {
-    //             Route::get('/', [WaliKelasController::class, 'indexSiswa']);
-    //             Route::get('/tambah', [WaliKelasController::class, 'createSiswa']);
-    //             Route::post('/simpan', [WaliKelasController::class, 'storeSiswa']);
-    //             Route::delete('/hapus', [WaliKelasController::class, 'destroySiswa']);
-    //             Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
-    //             Route::post('/edit/simpan', [WaliKelasController::class, 'updateSiswa']);
-    //             Route::get('/detail/{id}', [WaliKelasController::class, 'detailSiswa']);
-    //         });
-    //         Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
-    //         Route::prefix('/presensi')->group(function () {
-    //             Route::get('/', [GuruPiketController::class, 'indexPresensi']);
-    //             Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
-    //             Route::post('/simpan', [GuruPiketController::class, 'storePresensi']);
-    //             Route::delete('/hapus', [GuruPiketController::class, 'destroyPresensi']);
-    //             Route::get('/edit/{id}', [GuruPiketController::class, 'editPresensi']);
-    //             Route::post('/edit/simpan', [GuruPiketController::class, 'updatePresensi']);
-    //             Route::get('/detail/{id}', [GuruPiketController::class, 'detailPresensi']);
-    //         });
-    //         Route::prefix('/akun')->group(function() {
-    //             Route::get('/', [TblUserController::class, 'index']);
-    //             Route::get('/tambah', [TblUserController::class, 'create']);
-    //             Route::post('/simpan', [TblUserController::class, 'store']);
-    //             Route::get('/edit/{id}', [TblUserController::class, 'edit']);
-    //             Route::post('/edit/simpan', [TblUserController::class, 'update']);
-    //             Route::delete('/hapus', [TblUserController::class, 'destroy']);
-    //         });
-    //         Route::prefix('/guru')->group(function() {
-    //             Route::get('/', [GuruController::class, 'index']);
-    //             Route::get('/tambah', [GuruController::class, 'create']);
-    //             Route::post('/simpan', [GuruController::class, 'store']);
-    //             Route::get('/edit/{id}', [GuruController::class, 'edit']);
-    //             Route::post('/edit/simpan', [GuruController::class, 'update']);
-    //             Route::delete('/hapus', [GuruController::class, 'destroy']);
-    //         });
-    // });
+    // Routes Tatausaha
+    Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {
+            Route::get('/', [DashboardController::class, 'jumlahData']);
+            Route::prefix('siswa')->group(function () {
+                Route::get('/', [TataUsahaController::class, 'indexSiswa']);
+                Route::get('/tambah', [TataUsahaController::class, 'createSiswa']);
+                Route::post('/simpan', [TataUsahaController::class, 'storeSiswa']);
+                Route::delete('/hapus', [TataUsahaController::class, 'destroySiswa']);
+                Route::get('/edit/{id}', [TataUsahaController::class, 'editSiswa']);
+                Route::post('/edit/simpan', [TataUsahaController::class, 'updateSiswa']);
+                Route::get('/detail/{id}', [TataUsahaController::class, 'detailSiswa']);
+            });
+            Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
+            Route::prefix('/presensi')->group(function () {
+                Route::get('/', [GuruPiketController::class, 'indexPresensi']);
+                Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
+                Route::post('/simpan', [GuruPiketController::class, 'storePresensi']);
+                Route::delete('/hapus', [GuruPiketController::class, 'destroyPresensi']);
+                Route::get('/edit/{id}', [GuruPiketController::class, 'editPresensi']);
+                Route::post('/edit/simpan', [GuruPiketController::class, 'updatePresensi']);
+                Route::get('/detail/{id}', [GuruPiketController::class, 'detailPresensi']);
+            });
+            Route::prefix('/akun')->group(function() {
+                Route::get('/', [TblUserController::class, 'index']);
+                Route::get('/tambah', [TblUserController::class, 'create']);
+                Route::post('/simpan', [TblUserController::class, 'store']);
+                Route::get('/edit/{id}', [TblUserController::class, 'edit']);
+                Route::post('/edit/simpan', [TblUserController::class, 'update']);
+                Route::delete('/hapus', [TblUserController::class, 'destroy']);
+            });
+            Route::prefix('/guru')->group(function() {
+                Route::get('/', [GuruController::class, 'index']);
+                Route::get('/tambah', [GuruController::class, 'create']);
+                Route::post('/simpan', [GuruController::class, 'store']);
+                Route::get('/edit/{id}', [GuruController::class, 'edit']);
+                Route::post('/edit/simpan', [GuruController::class, 'update']);
+                Route::delete('/hapus', [GuruController::class, 'destroy']);
+            });
+    });
 
     Route::prefix('dashboard')->middleware(['akses:gurubk'])->group(function () {
         Route::get('/gurubk', [DashboardController::class, 'jumlahData']);

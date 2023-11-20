@@ -245,6 +245,10 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
+                <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
+                </ul>
+                @if (Auth::check() && Auth::user()->role != 'tatausaha')
+                <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
@@ -264,7 +268,7 @@
                         </div>
                     </li>
                 </ul>
-
+                @endif
                 <div class="d-flex">
 
                 </div>
