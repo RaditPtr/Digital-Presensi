@@ -262,6 +262,8 @@
                             <a class="dropdown-item my-0" href="/dashboard/gurubk/profil">Profil</a>
                             @elseif (Auth::check() && Auth::user()->role == 'gurupiket')
                             <a class="dropdown-item my-0" href="/dashboard/gurupiket/profil">Profil</a>
+                            @elseif (Auth::check() && Auth::user()->role == 'pengurus')
+                            <a class="dropdown-item my-0" href="/dashboard/pengurus/profil">Profil</a>
                             @endif
                             <hr>
                             <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
