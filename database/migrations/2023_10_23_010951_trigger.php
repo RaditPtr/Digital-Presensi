@@ -43,6 +43,68 @@ return new class extends Migration
             VALUES ("siswa", CURDATE(), CURTIME(), "Hapus", "Sukses");
         END
         ');
+
+        DB::unprepared('
+        CREATE TRIGGER add_pengurus
+        BEFORE INSERT ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_pengurus
+        AFTER UPDATE ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_pengurus
+        AFTER DELETE ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER add_presensi
+        BEFORE INSERT ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_presensi
+        AFTER UPDATE ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_presensi
+        AFTER DELETE ON presensi_siswa
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("presensi_siswa", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
+        
     }
 
     /**

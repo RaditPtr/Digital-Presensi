@@ -18,12 +18,14 @@
     <h1 class="content-header">Daftar Siswa</h1>
     <div class="col-md-2">
 
+        @if (Auth::check() && Auth::user()->role == 'tatausaha')
+
         <a href="siswa/tambah">
             <btn class="btn btn-success button btntambah">
                 <p>Tambah Siswa</p>
             </btn>
         </a>
-
+        @endif
     </div>
     <table class="bootstrap-table table table-bordered">
         <thead>
@@ -54,9 +56,11 @@
                     <a href="siswa/detail/{{$s->nis}}" class="btn btn-sm button btnDetail">
                         <p>Detail</p>
                     </a>
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha' || Auth::check() && Auth::user()->role == 'walikelas')
                     <a href="siswa/edit/{{ $s->nis }}">
                         <btn class="btn btn-sm button btnedit">Edit</btn>
                     </a>
+                    @endif
                     @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <btn class="btn btn-sm button btnHapus" idNis="{{ $s->nis }}">Hapus</btn>
                     @endif

@@ -56,8 +56,6 @@ return new class extends Migration
         p.id_presensi AS id_presensi,
         p.nis AS nis,
         s.id_kelas AS id_kelas,
-        w.id_guru AS id_guru,
-        g.id_user AS id_user,
         s.nama_siswa AS nama_siswa,
         p.tanggal_presensi AS tanggal_presensi,
         p.status_hadir AS status_hadir,
@@ -65,9 +63,7 @@ return new class extends Migration
         p.foto_bukti AS foto_bukti
         FROM presensi_siswa p
         INNER JOIN siswa s ON p.nis = s.nis
-        INNER JOIN kelas k ON s.id_kelas = k.id_kelas
-        INNER JOIN wali_kelas w ON k.id_walas = w.id_walas
-        INNER JOIN guru g ON w.id_guru = g.id_guru;
+        INNER JOIN kelas k ON s.id_kelas = k.id_kelas;
         ");
 
         DB::unprepared("

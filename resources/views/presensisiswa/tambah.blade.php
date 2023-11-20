@@ -19,6 +19,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                @if (Auth::check() && Auth::user()->role != 'siswa')
                                 <label>Siswa</label>
                                 <select name="nis" class="form-control">
                                     @foreach ($siswa as $s)
@@ -26,11 +27,24 @@
                                     </option>
                                     @endforeach
                                 </select>
+                                @endif
+                                @if (Auth::check() && Auth::user()->role == 'siswa')
+                                <label>Siswa</label>
+                                <input type="text" class="form-control" disabled value="{{$siswa[0]->nama_siswa}}">
+                                <select hidden name="nis" class="form-control">
+                                    @foreach ($siswa as $s)
+                                    <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @endif
                                 <label>Status</label>
                                 <select name="status_hadir" class="form-control">
                                     <option value="Hadir">Hadir</option>
                                     <option value="Izin">Izin</option>
-                                    <option value="Alpha">Alpha</option>
+                                    @if (Auth::check() && Auth::user()->role != 'siswa')
+                                        <option value="Alpha">Alpha</option>
+                                    @endif
                                 </select>
                                 <label>Foto Bukti</label>
                                 <input type="file" class="form-control" name="foto_bukti" />

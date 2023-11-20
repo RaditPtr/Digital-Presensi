@@ -5,19 +5,32 @@
     body {
         background-color: #98E4FF;
     }
+
+    .btnunduh {
+        background-color: #CBCDF2;
+    }
+
+    .btnunduh:hover {
+        background-color: #abacc7;
+    }
 </style>
 
 <div class="container">
     <h1 class="content-header">Daftar Presensi</h1>
-    <div class="col-md-2">
+    <div class="col-md-2 d-flex justify-content-end">
 
-        <a href="siswa/tambah">
-            @if (Auth::check() && Auth::user()->role == 'gurupiket')
-            <a href="presensi/tambah">
-                <btn class="btn btn-success button btntambah">Tambah Presensi</btn>
-            </a>
-            @endif
+        <a href="presensi/unduh" style="margin-right: 10px;">
+            <btn class="btn btn-success button btntambah btnunduh">Unduh PDF
+                <img src="{{asset('img/unduh.png')}}" style="max-width: 20px;">
+            </btn>
+
         </a>
+        <span></span>
+        @if (Auth::check() && Auth::user()->role == 'gurupiket')
+        <a href="presensi/tambah">
+            <btn class="btn btn-success button btntambah">Tambah Presensi</btn>
+        </a>
+        @endif
 
     </div>
     <table class="bootstrap-table table table-bordered DataTable">

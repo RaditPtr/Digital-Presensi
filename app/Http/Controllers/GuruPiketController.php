@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\PresensiSiswa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\tbl_user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,21 @@ use Illuminate\Support\Facades\File;
 
 class GuruPiketController extends Controller
 {
+    public function profilGuru(Tbl_user $tbl_user)
+    {
+        $auth = Auth::user();
+
+        $data = [
+            'akun' => $tbl_user
+                ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+                ->where('guru.id_user', $auth->id_user)->get()
+        ];
+
+        // dd($data);
+        return view('profil.profilguru', $data);
+    }
+
+
     public function indexSiswa(Siswa $siswa)
     {
         $data = [
@@ -24,7 +40,9 @@ class GuruPiketController extends Controller
     public function indexKelas(Kelas $kelas)
     {
         $data = [
-            'kelas' => $kelas->all()
+            'kelas' => $kelas
+            ->join('wali_kelas', 'kelas.id_walas', '=', 'wali_kelas.id_walas')
+            ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')->get()    
         ];
         return view('kelas.index', $data);
     }
@@ -70,6 +88,20 @@ class GuruPiketController extends Controller
         } else {
             return back()->with('error', 'Data presensi gagal ditambahkan');
         }
+    }
+    public function detailKelas(Request $request, Kelas $kelas)
+    {
+        $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();
+        $jumlahsiswa = DB::table('kelas')->select(DB::raw('COUNT(*) as JumlahSiswa'))
+        ->join('siswa', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->where('siswa.id_kelas', $request->id)->get();
+        $data = [
+            'detail' => $detailkelas,
+                // ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa
+        ];
+        // dd($data);
+        return view('Kelas.detail', $data);
     }
 
 
@@ -145,5 +177,24 @@ class GuruPiketController extends Controller
         }
 
         return response()->json($pesan);
+    }
+    public function detailSiswa(Request $request, Siswa $siswa)
+    {
+        $data = [
+            'detail' => $siswa->where('nis', $request->id)
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+        ];
+        // dd($data);
+        return view('siswa.detail', $data);
+    }
+    
+
+    public function unduhPresensi(PresensiSiswa $presensi)
+    {
+        $presensi = $presensi
+        ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get();
+        $pdf = PDF::loadView('presensisiswa.unduh', ['presensi' => $presensi]);
+        return $pdf->download('data-presensi.pdf');
     }
 }

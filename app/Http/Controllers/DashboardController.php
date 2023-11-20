@@ -6,13 +6,14 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Guru;
 use Illuminate\Http\Request;
+use App\Models\tbl_user;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function JumlahData()
+    public function JumlahData(Tbl_user $tbl_user)
     {
         $auth = Auth::user()->id_user;
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
@@ -35,6 +36,11 @@ class DashboardController extends Controller
         ->where('guru.id_user', $auth)->get();
         $totalkelas = DB::select('SELECT CountKelas() AS TotalKelas');
         $totalpresensi = DB::select('SELECT CountPresensi() AS TotalPresensi');
+        $auth = Auth::user();
+        $akun = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
+
 
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
@@ -44,7 +50,8 @@ class DashboardController extends Controller
             'jumlah_presensi' => $totalpresensi[0]->TotalPresensi,
             'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
             'jumlah_presensi_per_kelas' => $totalpresensiperkelas[0]->TotalPresensiPerKelas,
-            'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas
+            'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas,
+            'akun' => $akun
         ];
 
         return view('dashboard.index', $data);

@@ -250,7 +250,15 @@
                             <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-left h-1" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item my-0" href="#">Profil</a>
+                            @if (Auth::check() && Auth::user()->role == 'siswa')
+                            <a class="dropdown-item my-0" href="/dashboard/siswa/profil">Profil</a>
+                            @elseif (Auth::check() && Auth::user()->role == 'walikelas')
+                            <a class="dropdown-item my-0" href="/dashboard/walikelas/profil">Profil</a>
+                            @elseif (Auth::check() && Auth::user()->role == 'gurubk')
+                            <a class="dropdown-item my-0" href="/dashboard/gurubk/profil">Profil</a>
+                            @elseif (Auth::check() && Auth::user()->role == 'gurupiket')
+                            <a class="dropdown-item my-0" href="/dashboard/gurupiket/profil">Profil</a>
+                            @endif
                             <hr>
                             <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
                         </div>
