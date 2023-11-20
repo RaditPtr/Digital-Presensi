@@ -19,13 +19,24 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                @if (Auth::check() && Auth::user()->role != 'siswa')
+                                    <label>Siswa</label>
+                                    <select name="nis" class="form-control"> 
+                                        @foreach ($siswa as $s)
+                                        <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @if (Auth::check() && Auth::user()->role == 'siswa')
                                 <label>Siswa</label>
-                                <select name="nis" class="form-control">
-                                    @foreach ($siswa as $s)
-                                    <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                    <select name="nis" class="form-control"> 
+                                        @foreach ($siswa as $s)
+                                        <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                @endif
                                 <label>Status</label>
                                 <select name="status_hadir" class="form-control">
                                     <option value="Hadir">Hadir</option>

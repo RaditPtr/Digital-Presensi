@@ -119,7 +119,43 @@
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">
+                    <a href="gurupiket/kelas">
+                        <h3 class="card-title">JUMLAH KELAS</h3>
+                    </a>
+
+                    <h1 class="fw-bold">{{ $jumlah_kelas }}</h1>
+                </div>
+                <img src="{{ asset('img/kelas.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center bg-white">
+                <div class="card-body">
+                    <a href="gurupiket/siswa">
+                        <h3 class="card-title">JUMLAH SISWA</h3>
+                    </a>
+                    <h1 class="fw-bold">{{ $jumlah_siswa }}</h1>
+                </div>
+                <img src="{{ asset('img/jumlah siswa.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center bg-white">
+                <div class="card-body">
                     <a href="gurupiket/presensi">
+                        <h3 class="card-title">JUMLAH PRESENSI</h3>
+                    </a>
+
+                    <h1 class="fw-bold">{{ $jumlah_presensi }}</h1>
+                </div>
+                <img src="{{ asset('img/teacher.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+            </div>
+        </div>
+        @elseif (Auth::check() && Auth::user()->role == 'siswa')
+        <div class="col-md-4">
+            <div class="card text-center bg-white">
+                <div class="card-body">
+                    <a href="siswa/presensi/tambah">
                         <h3 class="card-title">JUMLAH PRESENSI</h3>
                     </a>
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
+use App\Models\PresensiSiswa;
+use App\Models\tbl_user;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -13,139 +15,58 @@ use Illuminate\Support\Facades\DB;
 class SiswaController extends Controller
 {
     //
-    public function index(Siswa $siswa)
+    public function createPresensi(Siswa $siswa)
     {
-        $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
-        $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
-        
-        // array untuk menangkap data siswa dari view dan 
-        // menangkap data jumlah siswa dari stored function
+
+        $auth = Auth::user()->id_user;
+
+        $siswa = $siswa
+        ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
+        ->where('siswa.id_user', $auth)->get();
         $data = [
-            'siswa' => $tampilkan_siswa,
-            // 'siswa' => $siswa->all(),
-            'jumlah_siswa' => $totalsiswa[0]->TotalSiswa
+            'siswa' => $siswa
         ];
-
-        return view('siswa.index', $data);
+        return view('presensisiswa.tambah', $data);
     }
 
-    public function create(Kelas $kelas)
+    public function storePresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
-
-        
-        $kelas = $kelas
-            ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
-            ->get();
-
-        // dd($kelas);
-        return view("siswa.tambah", ["kelas" => $kelas]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, Siswa $siswa)
-    {
-        $data = $request->validate(
-            [
-                'nis' => 'required',
-                'nama_siswa' => 'required',
-                'jenis_kelamin' => 'required',
-                'id_kelas' => 'required',
-                'foto_siswa' => 'required|file',
-            ]
-        );
-
-        $data['id_user'] = Auth::user()->id_user;
-
-        if ($request->hasFile('foto_siswa')) {
-            $foto_file = $request->file('foto_siswa');
-            $foto_nama = $foto_file->getClientOriginalName() . time() . '.' . $foto_file->getClientOriginalExtension();
+        $data = $request->validate([
+            'nis' => 'required',
+            'status_hadir' => 'required',
+            'foto_bukti' => 'required',
+        ]);
+        if ($request->hasFile('foto_bukti') && $request->file('foto_bukti')->isValid()) {
+            $foto_file = $request->file('foto_bukti');
+            $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_file->getClientOriginalExtension();
             $foto_file->move(public_path('foto'), $foto_nama);
-            $data['foto_siswa'] = $foto_nama;
+            $data['foto_bukti'] = $foto_nama;
+        } else {
+            return back()->with('error', 'File upload failed. Please select a valid file.');
         }
 
-        if (DB::statement('CALL CreateAkunSiswa(?,?,?,?,?,?)', [$data['nis'], $data['id_user'], 
-            $data['id_kelas'], $data['nama_siswa'], $data['jenis_kelamin'], $data['foto_siswa']])) {
-            return redirect()->to('dashboard/siswa')->with("success", "Data siswa Berhasil Ditambahkan");
+        $user = Auth::user();
+        $data['pembuat'] = $user->role;
+
+        $store = DB::statement("CALL CreatePresensi(?,?,?)", [$data['nis'], $data['status_hadir'], $data['foto_bukti']]);
+        if ($store) {
+            return redirect('dashboard/siswa');
         } else {
-            return back()->with("error", "Data siswa Gagal Ditambahkan");
+            return back()->with('error', 'Data presensi gagal ditambahkan');
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Request $request, Siswa $siswa, Kelas $kelas)
+    public function profilSiswa(Tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+
         $data = [
-            "siswa" => $siswa->where('nis', $request->id)->first(),
-            "kelas" => $kelas
-            ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
-            ->get()
+            'akun' => $tbl_user
+                ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+                ->where('siswa.id_user', $auth->id_user)->get()
         ];
+
         // dd($data);
-        return view('siswa.edit', $data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Siswa $siswa)
-    {
-        $nis = $request->input('nis');
-        
-        $data = $request->validate(
-            [
-                'nama_siswa' => 'sometimes',
-                'jenis_kelamin' => 'sometimes',
-                'id_kelas' => 'sometimes',
-                'foto_siswa' => 'sometimes|file'
-                ]
-            );
-        if ($nis !== null) {
-
-            if ($request->hasFile('foto_siswa') && $request->file('foto_siswa')->isValid()) {
-                $foto_file = $request->file('foto_siswa');
-                $foto_extension = $foto_file->getClientOriginalExtension();
-                $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_extension;
-                $foto_file->move(public_path('foto'), $foto_nama);
-
-                $update_data = $siswa->where('nis', $nis)->first();
-                File::delete(public_path('foto') . '/' . $update_data->file);
-
-                $data['foto_siswa'] = $foto_nama;
-            }
-
-                $dataUpdate = $siswa->where('nis', $nis)->update($data);
-                if($dataUpdate)
-                {
-                    return redirect('dashboard/siswa')->with('success', 'Data Berhasil Diupdate');
-                }else{
-                    return back()->with('error', 'Data Gagal Diupdate');
-                }
-            }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request, Siswa $siswa)
-    {
-        $nis = $request->input('nis');
-        $aksi = Siswa::where('nis', $nis)->delete();
-
-        if ($aksi) {
-            $pesan = [
-                'success' => true,
-                'pesan' => 'Data berhasil di hapus'
-            ];
-        } else {
-            $pesan = [
-                'success' => false,
-                'pesan' => 'Data gagal di hapus'
-            ];
-        }
-        return response()->json($pesan);
+        return view('profil.profilsiswa', $data);
     }
 }

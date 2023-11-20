@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-header">
                 <span class="h1">
-                    Detail Presensi
+                    Detail Kelas
                 </span>
             </div>
             <div class="card-body m-0">

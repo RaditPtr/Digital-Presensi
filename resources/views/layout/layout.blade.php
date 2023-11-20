@@ -213,7 +213,7 @@
                             <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-left h-1" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item my-0" href="#">Profil</a>
+                            <a class="dropdown-item my-0" href="/dashboard/siswa/profil">Profil</a>
                             <hr>
                             <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
                         </div>

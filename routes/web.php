@@ -72,6 +72,8 @@ Route::get('/home', function () {
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::get('/siswa', [GuruPiketController::class, 'indexSiswa']);
                 Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
+                Route::get('/kelas/detail/{id}', [GuruPiketController::class, 'detailKelas']);
+                Route::get('/siswa/detail/{id}', [GuruPiketController::class, 'detailSiswa']);
                 Route::prefix('/presensi')->group(function () {
                     Route::get('/', [GuruPiketController::class,'indexPresensi']);
                     Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
@@ -91,7 +93,12 @@ Route::get('/home', function () {
         });
 
         Route::prefix('dashboard')->middleware(['akses:siswa'])->group(function () {
-            Route::get('/siswa', [DashboardController::class, 'jumlahData']);
+            Route::prefix('/siswa')->group(function () {
+                Route::get('/profil', [SiswaController::class, 'profilSiswa']);
+                Route::get('/', [DashboardController::class, 'jumlahData']);
+                Route::get('/presensi/tambah', [SiswaController::class, 'createPresensi']);
+                Route::post('/presensi/simpan', [SiswaController::class, 'storePresensi']);
+            });
         });
 
         Route::prefix('dashboard')->middleware(['akses:pengurus'])->group(function () {
