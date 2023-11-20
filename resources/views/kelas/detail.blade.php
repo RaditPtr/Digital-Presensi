@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('title', 'Tambah Guru')
+@section('title', 'Detail Kelas')
 @section('content')
 <style>
     /* body {
@@ -35,11 +35,16 @@
                                         </tr>
                                         <tr>
                                             <td class="fw-bolder">Tahun Masuk & Tahun Keluar</td>
-                                            <td>: {{$detail[0]->tahun_masuk}} - {{$detail[0]->tahun_masuk}}</td>
+                                            <td>: {{$detail[0]->tahun_masuk}} - {{$detail[0]->tahun_keluar}}</td>
                                         </tr>
                                         <tr>
                                             <td class="fw-bolder">Wali Kelas</td>
                                             <td>: {{$detail[0]->nama_guru}}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="fw-bolder">Jumlah Siswa</td>
+                                            <td>: {{ $jumlahsiswa }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

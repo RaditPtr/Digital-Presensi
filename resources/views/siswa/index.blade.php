@@ -25,9 +25,7 @@
                 <p>Tambah Siswa</p>
             </btn>
         </a>
-
         @endif
-
     </div>
     <table class="bootstrap-table table table-bordered">
         <thead>
@@ -58,7 +56,7 @@
                     <a href="siswa/detail/{{$s->nis}}" class="btn btn-sm button btnDetail">
                         <p>Detail</p>
                     </a>
-                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha' || Auth::check() && Auth::user()->role == 'walikelas')
                     <a href="siswa/edit/{{ $s->nis }}">
                         <btn class="btn btn-sm button btnedit">Edit</btn>
                     </a>
