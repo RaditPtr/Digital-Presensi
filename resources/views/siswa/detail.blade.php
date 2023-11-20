@@ -25,7 +25,6 @@
                             <div class="container">
                                 @if ($detail[0]->foto_siswa)
                                 <div class="photo-container" style="border-radius: 50%;">
-                                    <br>
                                     <img src="{{ url('foto') . '/' . $detail[0]->foto_siswa }} " style="max-width: 250px; height: auto; border-radius: 50%" />
                                 </div>
                                 @endif

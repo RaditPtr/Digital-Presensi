@@ -43,6 +43,38 @@ return new class extends Migration
             VALUES ("siswa", CURDATE(), CURTIME(), "Hapus", "Sukses");
         END
         ');
+
+        DB::unprepared('
+        CREATE TRIGGER add_pengurus
+        BEFORE INSERT ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_pengurus
+        AFTER UPDATE ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_pengurus
+        AFTER DELETE ON pengurus_kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("pengurus_kelas", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
+        
     }
 
     /**

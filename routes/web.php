@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerDashboard;
 use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\GuruPiketController;
+use App\Http\Controllers\GuruBkController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LogsController;
@@ -37,6 +38,7 @@ Route::get('/home', function () {
         //Routes Walikelas
         Route::prefix('dashboard')->middleware(['akses:walikelas'])->group(function () {
             Route::prefix('/walikelas')->group(function () {
+                Route::get('/profil', [WaliKelasController::class, 'profilWalas']);
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::prefix('siswa')->group(function () {
                     Route::get('/', [WaliKelasController::class, 'indexSiswa']);
@@ -61,10 +63,12 @@ Route::get('/home', function () {
                 Route::get('/presensi', [WaliKelasController::class, 'indexPresensiSiswa']);
                 Route::get('/presensi/edit/{id}', [WaliKelasController::class, 'editPresensi']);
                 Route::post('/presensi/edit/simpan', [WaliKelasController::class, 'updatePresensi']);
-
+                Route::get('/presensi/detail/{id}', [WaliKelasController::class, 'detailPresensi']);
+                Route::get('/presensi/unduh', [WaliKelasController::class, 'unduhPresensi']);
             });
             
         });
+
 
         //Routes Tatausaha
         Route::prefix('dashboard')->middleware(['akses:gurupiket'])->group(function () {
@@ -80,14 +84,30 @@ Route::get('/home', function () {
                     Route::get('/edit/{id}', [GuruPiketController::class, 'editPresensi']);
                     Route::post('/edit/simpan', [GuruPiketController::class, 'updatePresensi']);
                     Route::get('/detail/{id}', [GuruPiketController::class, 'detailPresensi']);
+                    Route::get('/unduh', [GuruPiketController::class, 'unduhPresensi']);
                 });
                 
             });
             
         });
-
+        
         Route::prefix('dashboard')->middleware(['akses:gurubk'])->group(function () {
-            Route::get('/gurubk', [DashboardController::class, 'jumlahData']);
+            Route::prefix('/gurubk')->group(function () {
+                Route::get('/', [DashboardController::class, 'jumlahData']);
+                Route::get('/profil', [GuruBkController::class, 'profilGuru']);
+                Route::get('/kelas', [GuruBkController::class, 'indexKelas']);
+                Route::get('/kelas/detail/{id}', [GuruBkController::class, 'detailKelas']);
+
+                Route::prefix('siswa')->group(function () {
+                    Route::get('/', [GuruBkController::class, 'indexSiswa']);
+                    Route::get('/detail/{id}', [GuruBkController::class, 'detailSiswa']);
+                });
+                Route::prefix('/presensi')->group(function () {
+                    Route::get('/', [GuruPiketController::class, 'indexPresensi']);
+                    Route::get('/detail/{id}', [GuruBkController::class, 'detailPresensi']);
+                    Route::get('/unduh', [GuruBkController::class, 'unduhPresensi']);
+                });
+            });
         });
 
         Route::prefix('dashboard')->middleware(['akses:siswa'])->group(function () {

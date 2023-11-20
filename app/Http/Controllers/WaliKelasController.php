@@ -8,8 +8,7 @@ use App\Models\tbl_user;
 use App\Models\guru;
 use App\Models\PengurusKelas;
 use App\Models\PresensiSiswa;
-use App\Models\Pengurus;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -25,9 +24,11 @@ class WaliKelasController extends Controller
         $data = [
             'akun' => $tbl_user
                 ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
-                ->where('guru.id_user', $auth->id_user)->first()
+                ->where('guru.id_user', $auth->id_user)->get()
         ];
-        return view('layout.layout', $data);
+
+        // dd($data);
+        return view('profil.profilguru', $data);
     }
 
     public function indexSiswa(tbl_user $tbl_user, Siswa $siswa)
@@ -228,9 +229,13 @@ class WaliKelasController extends Controller
     public function detailKelas(Request $request, Kelas $kelas)
     {
         $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();
+        $jumlahsiswa = DB::table('kelas')->select(DB::raw('COUNT(*) as JumlahSiswa'))
+        ->join('siswa', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->where('siswa.id_kelas', $request->id)->get();
         $data = [
-            'detail' => $detailkelas
+            'detail' => $detailkelas,
                 // ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa
         ];
         // dd($data);
         return view('Kelas.detail', $data);
@@ -301,6 +306,17 @@ class WaliKelasController extends Controller
                 return back()->with('error', 'Data gagal diupdate');
             }
         }
+    }
+
+    public function detailPresensi(Request $request, PresensiSiswa $presensi)
+    {
+        $data = [
+            'detail' => $presensi->where('id_presensi', $request->id)
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+        ];
+        // dd($data);
+        return view('presensisiswa.detail', $data);
     }
 
 
@@ -441,5 +457,18 @@ class WaliKelasController extends Controller
         }
 
         return response()->json($pesan);
+    }
+
+    public function unduhPresensi(Request $request, PresensiSiswa $presensi, Kelas $kelas)
+    {
+        $auth = Auth::user()->id_user;
+        $presensi = $presensi
+            ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->join('wali_kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
+            ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')
+            ->where('guru.id_user', $auth)->get();
+        $pdf = PDF::loadView('presensisiswa.unduh', ['presensi' => $presensi]);
+        return $pdf->download('data-presensi.pdf');
     }
 }

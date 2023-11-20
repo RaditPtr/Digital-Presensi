@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\PresensiSiswa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\tbl_user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -145,5 +146,14 @@ class GuruPiketController extends Controller
         }
 
         return response()->json($pesan);
+    }
+
+    public function unduhPresensi(PresensiSiswa $presensi)
+    {
+        $presensi = $presensi
+        ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get();
+        $pdf = PDF::loadView('presensisiswa.unduh', ['presensi' => $presensi]);
+        return $pdf->download('data-presensi.pdf');
     }
 }

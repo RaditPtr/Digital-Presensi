@@ -13,69 +13,18 @@
     }
 </style>
 
-<!-- <div class="row">
-
-            <div class="card-header">
-                <span class="h1">
-                    Data siswa
-                </span>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <a href="siswa/tambah">
-                            <btn class="btn btn-success">Tambah Siswa</btn>
-                        </a>
-
-                    </div>
-                    <p>
-                    <table class="table table-hover table-bordered DataTable">
-                        <thead>
-                            <tr>
-                                <th>NIS</th>
-                                <th>NAMA SISWA</th>
-                                <th>JENIS KELAMIN</th>
-                                <th>FOTO SISWA</th>
-                                <th>AKSI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($siswa as $s)
-                            <tr>
-                                <td>{{ $s->nis }}</td>
-                                <td>{{ $s->nama_siswa }}</td>
-                                <td>{{ $s->jenis_kelamin }}</td>
-                                <td>
-                                    @if ($s->foto_siswa)
-                                    <img src="{{ url('foto') . '/' . $s->foto_siswa }} " style="max-width: 250px; height: auto;" />
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="siswa/edit/{{ $s->nis }}">
-                                        <btn class="btn btn-primary">EDIT</btn>
-                                    </a>
-                                    <btn class="btn btn-danger btnHapus" idNis="{{ $s->nis }}">HAPUS</btn>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card-footer">
-
-            </div>
-</div> -->
 
 <div class="container">
     <h1 class="content-header">Daftar Siswa</h1>
     <div class="col-md-2">
 
+        @if (Auth::check() && Auth::user()->role == 'tatausaha')
         <a href="siswa/tambah">
             <btn class="btn btn-success button btntambah">
                 <p>Tambah Siswa</p>
             </btn>
         </a>
+        @endif
 
     </div>
     <table class="bootstrap-table table table-bordered">
@@ -107,9 +56,11 @@
                     <a href="siswa/detail/{{$s->nis}}" class="btn btn-sm button btnDetail">
                         <p>Detail</p>
                     </a>
+                    @if (Auth::check() && Auth::user()->role == 'walikelas')
                     <a href="siswa/edit/{{ $s->nis }}">
                         <btn class="btn btn-sm button btnedit">Edit</btn>
                     </a>
+                    @endif
                     @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <btn class="btn btn-sm button btnHapus" idNis="{{ $s->nis }}">Hapus</btn>
                     @endif
