@@ -42,7 +42,7 @@
                                 <select name="status_hadir" class="form-control">
                                     <option value="Hadir">Hadir</option>
                                     <option value="Izin">Izin</option>
-                                    @if (Auth::check() && Auth::user()->role != 'siswa' || Auth::check() && Auth::user()->role != 'pengurus')
+                                    @if (Auth::check() && Auth::user()->role != 'siswa' && Auth::check() && Auth::user()->role != 'pengurus')
                                     <option value="Alpha">Alpha</option>
                                     @endif
                                 </select>

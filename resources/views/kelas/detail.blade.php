@@ -20,7 +20,7 @@
             </div>
             <div class="card-body m-0">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="form-group">
                             <div class="container">
                                 <table class="table table-bordered mt-3">

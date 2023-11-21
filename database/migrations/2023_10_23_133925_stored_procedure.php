@@ -127,17 +127,6 @@ return new class extends Migration
             INSERT INTO pengurus_kelas (nis, jabatan)
             VALUES (new_nis, new_jabatan);
 
-            -- SELECT
-            -- s.id_user AS id_user,
-            -- u.role AS role,
-            -- s.nis AS nis
-            -- FROM siswa s
-            -- INNER JOIN tbl_user u ON s.id_user = u.id_user;
-
-            -- UPDATE tbl_user SET role = 'penguruskelas'
-            -- WHERE nis = new_nis;
-
-
             IF pesan_error = '000' THEN
                 COMMIT; -- Commit jika tidak ada error
             ELSE

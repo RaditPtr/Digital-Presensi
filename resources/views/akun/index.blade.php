@@ -30,7 +30,7 @@
                     <td>{{ $a->username }}</td>
                     <td>{{ $a->role }}</td>
                     <td class="listbtn">
-                        <a href="edit/{{ $a->id_user }}"><button class="btn btn-sm button btnEdit">EDIT</button></a>
+                        <a href="akun/edit/{{ $a->id_user }}"><button class="btn btn-sm button btnEdit">EDIT</button></a>
                         <button class="btn btn-sm button btnHapus" idUser="{{ $a->id_user }}">HAPUS</button>
                     </td> 
                 </tr>

@@ -205,48 +205,61 @@
                         @endif
                     </li>
 
-                    <!-- Tambahkan logika untuk user -->
-                    @if (Auth::check() && Auth::user()->role == 'walikelas')
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="listDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            List Data
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="listDropdown">
-                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Kelas</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/siswa') }}">Data Siswa</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Pengurus Kelas</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Presensi Siswa</a>
-                            <!-- Tambahkan lebih banyak item dropdown sesuai kebutuhan -->
-                        </div>
-                    </li>
-                    @endif
 
-
-                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             List Data
                         </a>
+                        @if (Auth::check() && Auth::user()->role == 'tatausaha')
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ url('dashboard/akun') }}">Data Akun</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/guru') }}">Data Guru</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/kelas') }}">Data Kelas</a>
-                            <a class="dropdown-item" href="{{ url('dashboard/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/tatausaha/akun') }}">Data Akun</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/tatausaha/guru') }}">Data Guru</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/tatausaha/kelas') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/tatausaha/siswa') }}">Data Siswa</a>
                             <!-- Tambahkan lebih banyak item dropdown sesuai kebutuhan -->
                         </div>
+                        @elseif (Auth::check() && Auth::user()->role == 'gurupiket')
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/gurupiket/kelas') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/gurupiket/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/gurupiket/presensi') }}">Data presensi</a>
+                        </div>
+                        @elseif (Auth::check() && Auth::user()->role == 'gurubk')
+                            <a class="dropdown-item" href="{{ url('dashboard/gurubk/kelas') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/gurubk/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/gurubk/presensi') }}">Data presensi</a>
+                        @elseif (Auth::check() && Auth::user()->role == 'pengurus')
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/pengurus/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/pengurus/presensi') }}">Data presensi</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/pengurus/presensi/tambah') }}">isi presensi</a>
+                        </div>
+                        @elseif (Auth::check() && Auth::user()->role == 'walikelas')
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('dashboard/walikelas/kelas') }}">Data Kelas</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/walikelas/siswa') }}">Data Siswa</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/walikelas/presensi') }}">Data presensi</a>
+                            <a class="dropdown-item" href="{{ url('dashboard/walikelas/pengurus') }}">Data pengurus</a>
+                        </div>
+                        @endif
                     </li>
-                    @endif
-
+                    
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('dashboard/logs') }}">Log Activity</a>
                     </li>
                     
+
+                    @endif
                     
                 </ul>
 
+                @if (Auth::check() && Auth::user()->role == 'tatausaha')
                 <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
                 <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
                 </ul>
+                @endif
                 @if (Auth::check() && Auth::user()->role != 'tatausaha')
                 <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
                     <li class="nav-item dropdown">

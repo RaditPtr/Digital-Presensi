@@ -83,6 +83,9 @@
                 }
             });
         });
+        $(document).ready(function() {
+            $('.DataTable').DataTable();
+        });
     </script>
 
 @endsection

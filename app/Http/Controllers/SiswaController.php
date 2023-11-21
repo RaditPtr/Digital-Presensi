@@ -50,7 +50,7 @@ class SiswaController extends Controller
 
         $store = DB::statement("CALL CreatePresensi(?,?,?)", [$data['nis'], $data['status_hadir'], $data['foto_bukti']]);
         if ($store) {
-            return redirect('dashboard/pengurus');
+            return redirect('dashboard/siswa');
         } else {
             return back()->with('error', 'Data presensi gagal ditambahkan');
         }

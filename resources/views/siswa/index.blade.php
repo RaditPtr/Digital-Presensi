@@ -27,7 +27,7 @@
         </a>
         @endif
     </div>
-    <table class="bootstrap-table table table-bordered">
+    <table class="bootstrap-table table table-bordered DataTable">
         <thead>
             <tr>
                 <th scope="col" class="thead">NO</th>
@@ -110,6 +110,9 @@
             }
         });
     });
+    $(document).ready(function() {
+            $('.DataTable').DataTable();
+        });
 </script>
 
 @endsection

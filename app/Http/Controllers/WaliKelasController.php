@@ -132,6 +132,56 @@ class WaliKelasController extends Controller
         return view('presensisiswa.index', $data);
     }
 
+    public function editSiswa(Request $request, Siswa $siswa, Kelas $kelas)
+    {
+        $data = [
+            "siswa" => $siswa->where('nis', $request->id)->first(),
+            "kelas" => $kelas
+                ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
+                ->get()
+        ];
+        // dd($data);
+        return view('siswa.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateSiswa(Request $request, Siswa $siswa)
+    {
+        $nis = $request->input('nis');
+
+        $data = $request->validate(
+            [
+                'nama_siswa' => 'sometimes',
+                'jenis_kelamin' => 'sometimes',
+                // 'id_kelas' => 'sometimes',
+                'foto_siswa' => 'sometimes|file'
+            ]
+        );
+        if ($nis !== null) {
+
+            if ($request->hasFile('foto_siswa') && $request->file('foto_siswa')->isValid()) {
+                $foto_file = $request->file('foto_siswa');
+                $foto_extension = $foto_file->getClientOriginalExtension();
+                $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_extension;
+                $foto_file->move(public_path('foto'), $foto_nama);
+
+                $update_data = $siswa->where('nis', $nis)->first();
+                File::delete(public_path('foto') . '/' . $update_data->file);
+
+                $data['foto_siswa'] = $foto_nama;
+            }
+
+            $dataUpdate = $siswa->where('nis', $nis)->update($data);
+            if ($dataUpdate) {
+                return redirect('dashboard/walikelas/siswa')->with('success', 'Data Berhasil Diupdate');
+            } else {
+                return back()->with('error', 'Data Gagal Diupdate');
+            }
+        }
+    }
+
     public function editPresensi(Request $request, PresensiSiswa $presensi)
     {
         $data = [

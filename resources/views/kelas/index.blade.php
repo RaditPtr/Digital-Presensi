@@ -9,6 +9,9 @@
         <a href="kelas/tambah">
             <btn class="btn btn-success button btntambah content-header">Tambah Kelas</btn>
         </a>
+        <a href="kelas/unduh">
+            <btn class="btn btn-success button btntambah content-header">Unduh pdf</btn>
+        </a>
         @endif
 
     </div>
@@ -79,6 +82,9 @@
                     });
                 }
             });
+        });
+        $(document).ready(function() {
+            $('.DataTable').DataTable();
         });
     </script>
 

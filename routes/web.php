@@ -43,8 +43,8 @@ Route::get('/home', function () {
         //Routes Walikelas
         Route::prefix('dashboard')->middleware(['akses:walikelas'])->group(function () {
             Route::prefix('/walikelas')->group(function () {
-                Route::get('/profil', [WaliKelasController::class, 'profilWalas']);
                 Route::get('/', [DashboardController::class, 'jumlahData']);
+                Route::get('/profil', [WaliKelasController::class, 'profilWalas']);
                 Route::prefix('siswa')->group(function () {
                     Route::get('/', [WaliKelasController::class, 'indexSiswa']);
                     Route::get('/tambah', [WaliKelasController::class, 'createSiswa']);
@@ -78,7 +78,7 @@ Route::get('/home', function () {
         //Routes Tatausaha
         Route::prefix('dashboard')->middleware(['akses:gurupiket'])->group(function () {
             Route::prefix('/gurupiket')->group(function () {
-                Route::get('/profil', [GuruPiketController::class, 'profilGurube']);
+                Route::get('/profil', [GuruPiketController::class, 'profilGuru']);
                 Route::get('/', [DashboardController::class, 'jumlahData']);
                 Route::get('/siswa', [GuruPiketController::class, 'indexSiswa']);
                 Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
@@ -139,10 +139,11 @@ Route::get('/home', function () {
             Route::get('/presensi/tambah', [PengurusKelasController::class, 'createPresensi']);
             Route::post('/presensi/simpan', [PengurusKelasController::class, 'storePresensi']);
             Route::get('/presensi/detail/{id}', [PengurusKelasController::class, 'detailPresensi']);
+            Route::get('/presensi/unduh', [PengurusKelasController::class, 'unduhPresensi']);
 
         });
         });
-        Route::get('/logs', [LogsController::class, 'index']);
+        Route::get('/dashboard/logs', [LogsController::class, 'index']);
         Route::post('logs/hapus', [LogsController::class, 'destroy']);
         Route::get('/presensi', [WaliKelasController::class, 'indexPresensiSiswa']);
         Route::get('/presensi/edit/{id}', [WaliKelasController::class, 'editPresensi']);
@@ -151,42 +152,44 @@ Route::get('/home', function () {
 
     // Routes Tatausaha
     Route::prefix('dashboard')->middleware(['akses:tatausaha'])->group(function () {
+        Route::prefix('/tatausaha')->group(function () {
             Route::get('/', [DashboardController::class, 'jumlahData']);
             Route::prefix('siswa')->group(function () {
-                Route::get('/', [TataUsahaController::class, 'indexSiswa']);
+                Route::get('/', [WaliKelasController::class, 'indexSiswa']);
                 Route::get('/tambah', [TataUsahaController::class, 'createSiswa']);
                 Route::post('/simpan', [TataUsahaController::class, 'storeSiswa']);
                 Route::delete('/hapus', [TataUsahaController::class, 'destroySiswa']);
-                Route::get('/edit/{id}', [TataUsahaController::class, 'editSiswa']);
+                Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
                 Route::post('/edit/simpan', [TataUsahaController::class, 'updateSiswa']);
-                Route::get('/detail/{id}', [TataUsahaController::class, 'detailSiswa']);
+                Route::get('/detail/{id}', [WaliKelasController::class, 'detailSiswa']);
             });
-            Route::get('/kelas', [GuruPiketController::class, 'indexKelas']);
-            Route::prefix('/presensi')->group(function () {
-                Route::get('/', [GuruPiketController::class, 'indexPresensi']);
-                Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
-                Route::post('/simpan', [GuruPiketController::class, 'storePresensi']);
-                Route::delete('/hapus', [GuruPiketController::class, 'destroyPresensi']);
-                Route::get('/edit/{id}', [GuruPiketController::class, 'editPresensi']);
-                Route::post('/edit/simpan', [GuruPiketController::class, 'updatePresensi']);
-                Route::get('/detail/{id}', [GuruPiketController::class, 'detailPresensi']);
+            Route::prefix('/kelas')->group(function () {
+                Route::get('/', [TataUsahaController::class, 'indexKelas']);
+                Route::get('/tambah', [TataUsahaController::class, 'createKelas']);
+                Route::post('/simpan', [TataUsahaController::class, 'simpanKelas']);
+                Route::delete('/hapus', [TataUsahaController::class, 'destroyKelas']);
+                Route::get('/edit/{id}', [TataUsahaController::class, 'editKelas']);
+                Route::post('/edit/simpan', [TataUsahaController::class, 'updateKelas']);
+                Route::get('/detail/{id}', [TataUsahaController::class, 'detailKelas']);
+                Route::get('/unduh', [TataUsahaController::class, 'unduhKelas']);
             });
             Route::prefix('/akun')->group(function() {
-                Route::get('/', [TblUserController::class, 'index']);
-                Route::get('/tambah', [TblUserController::class, 'create']);
-                Route::post('/simpan', [TblUserController::class, 'store']);
-                Route::get('/edit/{id}', [TblUserController::class, 'edit']);
-                Route::post('/edit/simpan', [TblUserController::class, 'update']);
-                Route::delete('/hapus', [TblUserController::class, 'destroy']);
+                Route::get('/', [TataUsahaController::class, 'indexAkun']);
+                Route::get('/tambah', [TataUsahaController::class, 'createAkun']);
+                Route::post('/simpan', [TataUsahaController::class, 'storeAkun']);
+                Route::get('/edit/{id}', [TataUsahaController::class, 'editAkun']);
+                Route::post('/edit/simpan', [TataUsahaController::class, 'updateAkun']);
+                Route::delete('/hapus', [TataUsahaController::class, 'destroyAkun']);
             });
             Route::prefix('/guru')->group(function() {
-                Route::get('/', [GuruController::class, 'index']);
-                Route::get('/tambah', [GuruController::class, 'create']);
-                Route::post('/simpan', [GuruController::class, 'store']);
-                Route::get('/edit/{id}', [GuruController::class, 'edit']);
-                Route::post('/edit/simpan', [GuruController::class, 'update']);
-                Route::delete('/hapus', [GuruController::class, 'destroy']);
+                Route::get('/', [TataUsahaController::class, 'indexGuru']);
+                Route::get('/tambah', [TataUsahaController::class, 'createGuru']);
+                Route::post('/simpan', [TataUsahaController::class, 'storeGuru']);
+                Route::get('/edit/{id}', [TataUsahaController::class, 'editGuru']);
+                Route::post('/edit/simpan', [TataUsahaController::class, 'updateGuru']);
+                Route::delete('/hapus', [TataUsahaController::class, 'destroyGuru']);
             });
+        });
     });
 
     Route::prefix('dashboard')->middleware(['akses:gurubk'])->group(function () {

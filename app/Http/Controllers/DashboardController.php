@@ -42,9 +42,12 @@ class DashboardController extends Controller
             ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
             ->where('guru.id_user', $auth->id_user)->get();
 
+
+        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
         $ambildataakun = $siswa
         ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
-        ->where('siswa.id_user', Auth::user()->id_user)->get();
+        ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
+        ->where('tbl_user.id_user', Auth::user()->id_user)->get();
         $totalsiswaperkelaspengurus = DB::table('siswa')->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
         ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
         ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)
@@ -53,7 +56,7 @@ class DashboardController extends Controller
         ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
         ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
         ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)->get();
-
+        }
 
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
@@ -64,13 +67,22 @@ class DashboardController extends Controller
             'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
             'jumlah_presensi_per_kelas' => $totalpresensiperkelas[0]->TotalPresensiPerKelas,
             'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas,
-            'akun' => $akun,
-            'jumlah_siswa_per_kelas_pengurus' => $totalsiswaperkelaspengurus[0]->TotalSiswaPerKelas,
-            'jumlah_presensi_per_kelas_pengurus' => $totalpresensiperkelaspengurus[0]->TotalPresensiPerKelas,
-
+            'akun' => $akun
+        
         ];
 
-        return view('dashboard.index', $data);
+        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
+            $data2 = [
+                'jumlah_siswa_per_kelas_pengurus' => $totalsiswaperkelaspengurus[0]->TotalSiswaPerKelas,
+                'jumlah_presensi_per_kelas_pengurus' => $totalpresensiperkelaspengurus[0]->TotalPresensiPerKelas
+            ];
+        };
+
+        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
+        return view('dashboard.index', $data, $data2);
+        }else{
+            return view('dashboard.index', $data);
+        }
     }
     
 };

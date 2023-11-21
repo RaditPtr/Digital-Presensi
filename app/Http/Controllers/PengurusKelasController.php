@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PengurusKelas;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\PresensiSiswa;
 use App\Models\tbl_user;
 use Illuminate\Support\Facades\DB;
@@ -134,5 +136,18 @@ class PengurusKelasController extends Controller
         ];
         // dd($data);
         return view('presensisiswa.detail', $data);
+    }
+
+    public function unduhPresensi(PresensiSiswa $presensi, Tbl_user $tbl_user)
+    {
+        $akun = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', Auth::user()->id_user)->get();
+        $presensi = $presensi
+        ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->where('kelas.id_kelas', $akun[0]->id_kelas)->get();
+        $pdf = PDF::loadView('presensisiswa.unduh', ['presensi' => $presensi]);
+        return $pdf->download('data-presensi.pdf');
     }
 }

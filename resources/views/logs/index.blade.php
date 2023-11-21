@@ -29,10 +29,7 @@
                                                     <td>Terjadi Aksi {{ $tx->aksi }} Yg {{ $tx->record}} Di Tabel {{ $tx->tabel }}</td>
                                                     <td>{{ $tx->tanggal }}</td>
                                                     <td>{{ $tx->jam }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="checkbox" name="id_log[]"
-                                                            value="{{ $tx->id_log }}">
-                                                    </td>
+                                                    
                                                 </tr>
                                             @endforeach
                                         </tbody>
